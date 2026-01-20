@@ -1,5 +1,18 @@
 # 🚀 지금 바로 시작하기
 
+## 📚 필수 가이드 문서
+
+**먼저 읽어보세요!**
+
+| 가이드 | 내용 | 중요도 |
+|--------|------|--------|
+| 📄 [**YouTube 설명란 가이드**](./docs/DESCRIPTION_GUIDE.md) | YouTube 설명란 사용법 및 예시 | ⭐⭐⭐ **필수!** |
+| 🔑 [API 설정 가이드](./docs/API_SETUP_GUIDE.md) | Gemini, D-ID API 키 발급 방법 | ⭐⭐⭐ |
+| 🌐 [웹 UI 가이드](./docs/WEB_UI_GUIDE.md) | 클릭으로 키워드 선택하기 | ⭐⭐ |
+| ⚙️ [자동화 구조](./AUTOMATION_STRUCTURE.md) | 시스템 작동 원리 상세 설명 | ⭐ |
+
+---
+
 ## ⚡ 2가지 사용 방법
 
 ### 방법 1: 키워드 선택 모드 ⭐NEW (추천!)
@@ -20,6 +33,7 @@ python keyword_selector.py
 3. 원하는 키워드/제목 선택
 4. 자동으로 YouTube 숏폼 스크립트 생성
 5. 이미지만 추가하면 비디오 완성!
+6. **YouTube 설명란도 자동 생성됨!** ⭐NEW
 
 **자세한 가이드**: [키워드 선택 시스템](./docs/KEYWORD_SELECTOR.md)
 

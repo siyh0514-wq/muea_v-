@@ -2,6 +2,20 @@
 
 > 사진만 제공하면 자동으로 숏폼 영상이 만들어지는 완전 자동화 시스템
 
+## 📚 빠른 시작 가이드
+
+**처음 사용하시나요? 아래 가이드를 먼저 읽어보세요!**
+
+| 가이드 | 설명 | 링크 |
+|--------|------|------|
+| 🚀 **즉시 시작** | 3단계로 바로 시작하기 | [START_NOW.md](./START_NOW.md) |
+| 📄 **설명란 자동 생성** ⭐NEW | YouTube 설명란 사용법 | [DESCRIPTION_GUIDE.md](./docs/DESCRIPTION_GUIDE.md) |
+| 🔑 **API 설정** | API 키 발급 및 설정 | [API_SETUP_GUIDE.md](./docs/API_SETUP_GUIDE.md) |
+| 🌐 **웹 UI** | 클릭으로 키워드 선택 | [WEB_UI_GUIDE.md](./docs/WEB_UI_GUIDE.md) |
+| ⚙️ **자동화 구조** | 시스템 작동 원리 | [AUTOMATION_STRUCTURE.md](./AUTOMATION_STRUCTURE.md) |
+
+---
+
 ## 🚀 주요 기능
 
 ### ✨ 핵심 특징
