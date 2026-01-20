@@ -65,9 +65,9 @@ class YouTubeAutomation:
         images_dir = Path('input/images')
         scripts_dir = Path('input/scripts')
         
-        if not images_dir.exists() or not scripts_dir.exists():
-            print("❌ input/images 또는 input/scripts 폴더가 없습니다.")
-            return []
+        # 폴더가 없으면 생성
+        images_dir.mkdir(parents=True, exist_ok=True)
+        scripts_dir.mkdir(parents=True, exist_ok=True)
         
         # 이미지 파일 찾기
         image_files = list(images_dir.glob('*.jpg')) + \
