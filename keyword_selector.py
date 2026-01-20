@@ -14,8 +14,9 @@ load_dotenv()
 class KeywordSelector:
     """애드센스/블로그 수익화를 위한 다국어 키워드 선택 시스템"""
     
-    def __init__(self, language='ko'):
+    def __init__(self, language='ko', ai_provider='gemini'):
         self.language = language
+        self.ai_provider = ai_provider.lower()
         self.load_keyword_database()
         self.load_language_config()
         
@@ -46,15 +47,6 @@ class KeywordSelector:
             dict: 키워드 분석 결과
         """
         try:
-            import google.generativeai as genai
-            
-            if not os.getenv('GEMINI_API_KEY'):
-                print("⚠️  Gemini API 키가 없습니다. 기본 키워드를 사용합니다.")
-                return self._generate_default_keywords(topic)
-            
-            genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-            model = genai.GenerativeModel('gemini-1.5-flash')
-            
             # 언어별 프롬프트 선택
             prompts = {
                 'ko': self._get_korean_prompt(topic),
@@ -63,11 +55,45 @@ class KeywordSelector:
                 'ja': self._get_japanese_prompt(topic),
                 'th': self._get_thai_prompt(topic)
             }
-            
             prompt = prompts.get(self.language, prompts['ko'])
             
-            response = model.generate_content(prompt)
-            result_text = response.text
+            if self.ai_provider == 'openai':
+                # OpenAI GPT
+                import openai
+                
+                api_key = os.getenv('OPENAI_API_KEY')
+                if not api_key:
+                    print("⚠️  OpenAI API 키가 없습니다. 기본 키워드를 사용합니다.")
+                    return self._generate_default_keywords(topic)
+                
+                openai.api_key = api_key
+                
+                response = openai.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {"role": "system", "content": "You are a shopping channel expert earning $20K+/month through keyword optimization."},
+                        {"role": "user", "content": prompt}
+                    ],
+                    temperature=0.7,
+                    max_tokens=2000
+                )
+                
+                result_text = response.choices[0].message.content
+                
+            else:
+                # Gemini AI (기본)
+                import google.generativeai as genai
+                
+                api_key = os.getenv('GEMINI_API_KEY')
+                if not api_key:
+                    print("⚠️  Gemini API 키가 없습니다. 기본 키워드를 사용합니다.")
+                    return self._generate_default_keywords(topic)
+                
+                genai.configure(api_key=api_key)
+                model = genai.GenerativeModel('gemini-1.5-flash')
+                
+                response = model.generate_content(prompt)
+                result_text = response.text
             
             # JSON 파싱
             if '```json' in result_text:

@@ -27,10 +27,11 @@ from multilingual_selector import MultilingualKeywordSelector
 class AutoVideoCreator:
     """완전 자동 비디오 생성기"""
     
-    def __init__(self, language='ko', quality='high'):
+    def __init__(self, language='ko', quality='high', ai_provider='gemini'):
         self.language = language
         self.quality = quality
-        self.selector = MultilingualKeywordSelector(language)
+        self.ai_provider = ai_provider.lower()
+        self.selector = MultilingualKeywordSelector(language, ai_provider=self.ai_provider)
         self.load_configs()
         
     def load_configs(self):
@@ -116,22 +117,9 @@ class AutoVideoCreator:
         return result
     
     def analyze_image_with_gemini(self, image_path):
-        """Gemini Vision으로 이미지 분석"""
+        """AI로 이미지 분석 (Gemini 또는 GPT-4o Vision)"""
         try:
-            import google.generativeai as genai
             from PIL import Image
-            
-            if not os.getenv('GEMINI_API_KEY'):
-                print("   ⚠️  Gemini API 키가 없습니다. 기본 분석 사용...")
-                return {
-                    'detected_subject': image_path.stem,
-                    'is_product': False,
-                    'description': '이미지 설명',
-                    'suggested_category': 'general'
-                }
-            
-            genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
-            model = genai.GenerativeModel('gemini-1.5-flash')
             
             # 언어별 프롬프트
             prompts = {
@@ -141,22 +129,71 @@ class AutoVideoCreator:
                 'ja': "この画像を分析してショート動画ショッピングチャンネル用JSON情報を提供: detected_subject(商品名), is_product(商品かどうか), description(詳細説明), suggested_category(カテゴリー), key_features(特徴3つ)",
                 'th': "วิเคราะห์รูปภาพนี้และให้ข้อมูล JSON สำหรับช่องช้อปปิ้งวิดีโอสั้น: detected_subject(ชื่อสินค้า), is_product(เป็นสินค้าหรือไม่), description(คำอธิบาย), suggested_category(หมวดหมู่), key_features(3 คุณสมบัติ)"
             }
-            
-            img = Image.open(image_path)
             prompt = prompts.get(self.language, prompts['ko'])
             
-            response = model.generate_content([prompt, img])
+            if self.ai_provider == 'openai':
+                # OpenAI GPT-4o Vision
+                import openai
+                import base64
+                
+                api_key = os.getenv('OPENAI_API_KEY')
+                if not api_key:
+                    print("   ⚠️  OpenAI API 키가 없습니다. 기본 분석 사용...")
+                    return self._default_analysis(image_path)
+                
+                openai.api_key = api_key
+                
+                # 이미지를 base64로 인코딩
+                with open(image_path, 'rb') as f:
+                    image_base64 = base64.b64encode(f.read()).decode()
+                
+                response = openai.chat.completions.create(
+                    model="gpt-4o",
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": [
+                                {"type": "text", "text": prompt},
+                                {
+                                    "type": "image_url",
+                                    "image_url": {
+                                        "url": f"data:image/jpeg;base64,{image_base64}"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    max_tokens=500
+                )
+                
+                result_text = response.choices[0].message.content
+                
+            else:
+                # Gemini Vision (기본)
+                import google.generativeai as genai
+                
+                api_key = os.getenv('GEMINI_API_KEY')
+                if not api_key:
+                    print("   ⚠️  Gemini API 키가 없습니다. 기본 분석 사용...")
+                    return self._default_analysis(image_path)
+                
+                genai.configure(api_key=api_key)
+                model = genai.GenerativeModel('gemini-1.5-flash')
+                
+                img = Image.open(image_path)
+                response = model.generate_content([prompt, img])
+                result_text = response.text
             
             # JSON 파싱
             import re
-            json_match = re.search(r'\{[\s\S]*\}', response.text)
+            json_match = re.search(r'\{[\s\S]*\}', result_text)
             if json_match:
                 return json.loads(json_match.group())
             
             return {
                 'detected_subject': image_path.stem,
                 'is_product': True,
-                'description': response.text[:200],
+                'description': result_text[:200],
                 'suggested_category': 'general'
             }
             
