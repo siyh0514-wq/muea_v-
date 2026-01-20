@@ -199,12 +199,16 @@ class AutoVideoCreator:
             
         except Exception as e:
             print(f"   ⚠️  분석 실패: {e}")
-            return {
-                'detected_subject': image_path.stem,
-                'is_product': False,
-                'description': '자동 분석',
-                'suggested_category': 'general'
-            }
+            return self._default_analysis(image_path)
+    
+    def _default_analysis(self, image_path):
+        """기본 분석 결과"""
+        return {
+            'detected_subject': image_path.stem,
+            'is_product': False,
+            'description': '이미지 설명',
+            'suggested_category': 'general'
+        }
     
     def create_high_quality_video(self, image_path, version, image_analysis):
         """고화질 비디오 생성"""
@@ -377,18 +381,25 @@ def main():
     parser.add_argument('--quality', type=str, default='high',
                        choices=['high', 'ultra'],
                        help='비디오 화질 (high=1080p, ultra=4K)')
+    parser.add_argument('--ai', type=str, default='gemini',
+                       choices=['gemini', 'openai', 'gpt'],
+                       help='AI Provider (gemini=Gemini AI [저렴], openai/gpt=GPT-4o [고품질])')
     parser.add_argument('--image', type=str, help='특정 이미지 파일 경로 (선택사항)')
     
     args = parser.parse_args()
+    
+    # gpt -> openai로 변환
+    ai_provider = 'openai' if args.ai in ['openai', 'gpt'] else 'gemini'
     
     print("\n" + "="*80)
     print("🎬 완전 자동 숏폼 비디오 생성기")
     print("="*80)
     print(f"언어: {args.lang}")
     print(f"화질: {args.quality.upper()}")
+    print(f"AI: {ai_provider.upper()} {'(GPT-4o Vision)' if ai_provider == 'openai' else '(Gemini 1.5)'}")
     print("="*80)
     
-    creator = AutoVideoCreator(language=args.lang, quality=args.quality)
+    creator = AutoVideoCreator(language=args.lang, quality=args.quality, ai_provider=ai_provider)
     
     if args.image:
         # 특정 이미지만 처리
