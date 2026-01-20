@@ -485,5 +485,14 @@ JSON 형식으로 응답:
         print("="*60)
 
 if __name__ == '__main__':
-    automation = YouTubeAutomation()
-    automation.run()
+    import sys
+    
+    # 옵션 체크
+    if len(sys.argv) > 1 and sys.argv[1] == '--keyword':
+        # 키워드 선택 모드
+        from keyword_selector import run_keyword_selector
+        run_keyword_selector()
+    else:
+        # 일반 자동화 모드
+        automation = YouTubeAutomation()
+        automation.run()
