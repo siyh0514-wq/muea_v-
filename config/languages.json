@@ -1,0 +1,212 @@
+{
+  "supported_languages": {
+    "ko": {
+      "name": "한국어",
+      "code": "ko-KR",
+      "voices": [
+        "ko-KR-SunHiNeural",
+        "ko-KR-InJoonNeural",
+        "ko-KR-BongJinNeural",
+        "ko-KR-GookMinNeural"
+      ],
+      "keyword_types": {
+        "action": ["신청방법", "조회", "다운로드", "바로가기", "확인하기"],
+        "finance": ["환급", "지원금", "혜택", "보조금", "할인"],
+        "age_target": ["40대", "50대", "60대", "중년", "시니어"]
+      },
+      "ctr_phrases": [
+        "놓치면 손해",
+        "꼭 확인하세요",
+        "1분만에 보는",
+        "알아두면 이득",
+        "대박 꿀팁"
+      ],
+      "natural_expressions": {
+        "intro": ["안녕하세요", "오늘은", "자, 그럼"],
+        "transition": ["그리고", "또한", "그 다음에"],
+        "emphasis": ["특히", "정말", "무엇보다"],
+        "conclusion": ["꼭", "잊지 마세요", "확인해보세요"]
+      }
+    },
+    "zh": {
+      "name": "中文",
+      "code": "zh-CN",
+      "voices": [
+        "zh-CN-XiaoxiaoNeural",
+        "zh-CN-YunxiNeural",
+        "zh-CN-YunjianNeural",
+        "zh-CN-XiaoyiNeural"
+      ],
+      "keyword_types": {
+        "action": ["申请方法", "查询", "下载", "立即前往", "确认"],
+        "finance": ["退款", "补助金", "优惠", "补贴", "折扣"],
+        "age_target": ["40岁", "50岁", "60岁", "中年", "老年人"]
+      },
+      "ctr_phrases": [
+        "错过可惜",
+        "必看",
+        "1分钟了解",
+        "必知",
+        "超实用"
+      ],
+      "natural_expressions": {
+        "intro": ["大家好", "今天", "那么"],
+        "transition": ["接下来", "还有", "另外"],
+        "emphasis": ["特别是", "重要的是", "值得注意"],
+        "conclusion": ["一定", "别忘了", "赶快查看"]
+      }
+    },
+    "en": {
+      "name": "English",
+      "code": "en-US",
+      "voices": [
+        "en-US-JennyNeural",
+        "en-US-GuyNeural",
+        "en-US-AriaNeural",
+        "en-US-DavisNeural"
+      ],
+      "keyword_types": {
+        "action": ["how to apply", "check now", "download", "visit now", "verify"],
+        "finance": ["refund", "grant", "benefit", "subsidy", "discount"],
+        "age_target": ["40s", "50s", "60s", "middle-aged", "seniors"]
+      },
+      "ctr_phrases": [
+        "Don't miss out",
+        "Must watch",
+        "In 1 minute",
+        "Must know",
+        "Amazing tips"
+      ],
+      "natural_expressions": {
+        "intro": ["Hey there", "Today", "Let's dive into"],
+        "transition": ["Now", "Also", "Plus"],
+        "emphasis": ["Importantly", "Here's the thing", "What's interesting"],
+        "conclusion": ["Make sure to", "Don't forget", "Check it out"]
+      }
+    },
+    "ja": {
+      "name": "日本語",
+      "code": "ja-JP",
+      "voices": [
+        "ja-JP-NanamiNeural",
+        "ja-JP-KeitaNeural",
+        "ja-JP-AoiNeural",
+        "ja-JP-DaichiNeural"
+      ],
+      "keyword_types": {
+        "action": ["申請方法", "確認", "ダウンロード", "すぐに", "チェック"],
+        "finance": ["還付", "支援金", "特典", "補助金", "割引"],
+        "age_target": ["40代", "50代", "60代", "中年", "シニア"]
+      },
+      "ctr_phrases": [
+        "見逃し厳禁",
+        "必見",
+        "1分でわかる",
+        "知らないと損",
+        "超お得"
+      ],
+      "natural_expressions": {
+        "intro": ["皆さん、こんにちは", "今日は", "さて"],
+        "transition": ["それでは", "次に", "ちなみに"],
+        "emphasis": ["実は", "なんと", "驚くべきことに"],
+        "conclusion": ["ぜひ", "お見逃しなく", "チェックしてください"]
+      }
+    },
+    "th": {
+      "name": "ภาษาไทย",
+      "code": "th-TH",
+      "voices": [
+        "th-TH-PremwadeeNeural",
+        "th-TH-NiwatNeural",
+        "th-TH-AcharaNeural"
+      ],
+      "keyword_types": {
+        "action": ["วิธีสมัคร", "ตรวจสอบ", "ดาวน์โหลด", "ไปที่", "เช็คเลย"],
+        "finance": ["คืนเงิน", "เงินอุดหนุน", "สิทธิประโยชน์", "เงินช่วยเหลือ", "ส่วนลด"],
+        "age_target": ["อายุ 40", "อายุ 50", "อายุ 60", "วัยกลางคน", "ผู้สูงอายุ"]
+      },
+      "ctr_phrases": [
+        "พลาดไม่ได้",
+        "ต้องดู",
+        "เข้าใจใน 1 นาที",
+        "ควรรู้",
+        "เด็ดมาก"
+      ],
+      "natural_expressions": {
+        "intro": ["สวัสดีครับ/ค่ะ", "วันนี้", "เรามาดูกัน"],
+        "transition": ["ต่อไป", "และ", "นอกจากนี้"],
+        "emphasis": ["ที่สำคัญ", "น่าสนใจคือ", "ต้องบอกว่า"],
+        "conclusion": ["อย่าลืม", "รีบเช็ค", "ไปดูกันเลย"]
+      }
+    }
+  },
+  "version_templates": {
+    "style_variants": [
+      {
+        "id": "v1_short",
+        "name": "초단축 버전 (10-15초)",
+        "description": "핵심만 빠르게",
+        "duration_range": [10, 15],
+        "style": "빠른 전개, 결론 중심"
+      },
+      {
+        "id": "v2_standard",
+        "name": "표준 버전 (20-30초)",
+        "description": "균형잡힌 설명",
+        "duration_range": [20, 30],
+        "style": "서론-본론-결론 구조"
+      },
+      {
+        "id": "v3_detailed",
+        "name": "상세 버전 (40-60초)",
+        "description": "자세한 설명",
+        "duration_range": [40, 60],
+        "style": "깊이있는 분석과 설명"
+      }
+    ],
+    "tone_variants": [
+      {
+        "id": "formal",
+        "name": "공식적",
+        "description": "전문적이고 신뢰감 있는 톤"
+      },
+      {
+        "id": "casual",
+        "name": "캐주얼",
+        "description": "친근하고 편안한 톤"
+      },
+      {
+        "id": "urgent",
+        "name": "긴급",
+        "description": "시급함을 강조하는 톤"
+      }
+    ]
+  },
+  "language_specific_seo": {
+    "ko": {
+      "platforms": ["YouTube", "Naver", "Daum"],
+      "hashtag_format": "#키워드",
+      "title_max_length": 100
+    },
+    "zh": {
+      "platforms": ["Bilibili", "Douyin", "Weibo"],
+      "hashtag_format": "#关键词",
+      "title_max_length": 80
+    },
+    "en": {
+      "platforms": ["YouTube", "TikTok", "Instagram"],
+      "hashtag_format": "#keyword",
+      "title_max_length": 100
+    },
+    "ja": {
+      "platforms": ["YouTube", "Nico", "Twitter"],
+      "hashtag_format": "#キーワード",
+      "title_max_length": 100
+    },
+    "th": {
+      "platforms": ["YouTube", "Facebook", "LINE"],
+      "hashtag_format": "#คำสำคัญ",
+      "title_max_length": 100
+    }
+  }
+}
