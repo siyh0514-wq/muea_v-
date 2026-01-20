@@ -1,0 +1,156 @@
+{
+  "manual_input_workflow": {
+    "name": "수동 입력 기반 자동화 워크플로우",
+    "description": "사용자가 이미지와 대본을 제공하면 나머지는 자동 처리",
+    "version": "1.0.0"
+  },
+  "user_input_format": {
+    "description": "사용자가 제공해야 하는 파일과 정보",
+    "required_files": {
+      "image": {
+        "location": "./input/images/",
+        "filename": "자유롭게 명명 (예: video_001.jpg)",
+        "formats": ["jpg", "jpeg", "png", "webp"],
+        "requirements": {
+          "min_resolution": "1024x1024",
+          "max_size": "10MB",
+          "recommended": "정면을 보는 인물 사진 (D-ID 최적화)"
+        }
+      },
+      "script": {
+        "location": "./input/scripts/",
+        "filename": "이미지와 동일한 이름 (예: video_001.json)",
+        "format": "JSON",
+        "template": "script_template.json 참조"
+      }
+    },
+    "naming_convention": {
+      "rule": "이미지와 스크립트 파일명을 동일하게",
+      "example": {
+        "image": "my_video_001.jpg",
+        "script": "my_video_001.json"
+      },
+      "automation": "시스템이 자동으로 매칭하여 처리"
+    }
+  },
+  "script_template_structure": {
+    "filename": "script_template.json",
+    "required_fields": {
+      "title": "영상 제목 (60자 이내)",
+      "script_text": "D-ID에서 말할 전체 대본",
+      "duration": "예상 시간 (초)",
+      "voice_id": "한국어 음성 선택"
+    },
+    "optional_fields": {
+      "hashtags": ["해시태그 배열"],
+      "description": "YouTube 설명",
+      "thumbnail_text": "썸네일에 들어갈 텍스트",
+      "category": "카테고리"
+    }
+  },
+  "automated_steps": {
+    "description": "사용자 입력 후 자동으로 실행되는 단계",
+    "step_1_file_detection": {
+      "trigger": "input 폴더 모니터링",
+      "action": "새로운 이미지+스크립트 페어 감지",
+      "interval": "30초마다 체크"
+    },
+    "step_2_validation": {
+      "check": [
+        "이미지 파일 존재 확인",
+        "스크립트 파일 존재 확인",
+        "JSON 형식 유효성 검증",
+        "필수 필드 존재 확인"
+      ],
+      "on_error": "에러 로그 생성 및 알림"
+    },
+    "step_3_thumbnail_generation": {
+      "method": "자동",
+      "process": [
+        "원본 이미지 로드",
+        "썸네일 텍스트 오버레이 추가",
+        "9:16 비율로 최적화",
+        "고대비 텍스트 적용"
+      ],
+      "output": "./output/thumbnails/{filename}_thumbnail.png"
+    },
+    "step_4_did_video_creation": {
+      "method": "D-ID API 호출",
+      "input": {
+        "image": "사용자 제공 이미지",
+        "script": "사용자 제공 대본",
+        "voice": "스크립트에서 지정된 음성"
+      },
+      "process": [
+        "D-ID API에 이미지 업로드",
+        "대본으로 말하는 비디오 생성",
+        "결과 폴링 (완료까지 대기)",
+        "완성된 비디오 다운로드"
+      ],
+      "output": "./output/videos/{filename}_final.mp4"
+    },
+    "step_5_youtube_upload": {
+      "method": "YouTube Data API v3",
+      "input": {
+        "video": "D-ID 생성 비디오",
+        "thumbnail": "자동 생성 썸네일",
+        "title": "스크립트의 제목",
+        "description": "스크립트의 설명",
+        "hashtags": "스크립트의 해시태그"
+      },
+      "process": [
+        "YouTube에 비디오 업로드",
+        "썸네일 설정",
+        "메타데이터 설정",
+        "업로드 완료 알림"
+      ],
+      "output": {
+        "youtube_url": "업로드된 영상 URL",
+        "status": "public/unlisted/private"
+      }
+    },
+    "step_6_cleanup": {
+      "action": [
+        "원본 파일을 completed 폴더로 이동",
+        "처리 완료 리포트 생성",
+        "이메일 또는 Slack 알림 전송"
+      ]
+    }
+  },
+  "workflow_modes": {
+    "full_auto": {
+      "description": "이미지+스크립트 업로드만으로 YouTube까지 자동",
+      "steps": "1-6 모두 자동 실행",
+      "user_action": "파일 업로드만"
+    },
+    "semi_auto": {
+      "description": "비디오 생성까지만 자동, 업로드는 수동",
+      "steps": "1-4 자동, 5-6 수동",
+      "use_case": "검토 후 업로드하고 싶을 때"
+    },
+    "manual_review": {
+      "description": "각 단계마다 승인 필요",
+      "steps": "모든 단계에서 사용자 확인 대기",
+      "use_case": "완벽한 품질 관리"
+    }
+  },
+  "cost_per_video": {
+    "thumbnail_generation": "$0.00 (자동 이미지 처리)",
+    "did_video_creation": "$0.08",
+    "youtube_upload": "$0.00",
+    "total": "$0.08 per video",
+    "time": "5-10분 (완전 자동)"
+  },
+  "user_workflow_summary": {
+    "step_1": "이미지 준비 (예: my_video.jpg)",
+    "step_2": "대본 작성 (my_video.json)",
+    "step_3": "두 파일을 input 폴더에 업로드",
+    "step_4": "시스템이 자동으로:",
+    "step_4a": "  - 썸네일 생성",
+    "step_4b": "  - D-ID로 말하는 비디오 생성",
+    "step_4c": "  - YouTube에 업로드",
+    "step_5": "완료 알림 받기 (5-10분 후)",
+    "user_time": "2-3분 (파일 업로드만)",
+    "automation_time": "5-10분"
+  }
+}

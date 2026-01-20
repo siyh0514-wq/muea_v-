@@ -1,0 +1,187 @@
+{
+  "no_code_workflow": {
+    "name": "노코드 YouTube 숏폼 자동화",
+    "description": "코드 없이 설정만으로 작동하는 완전 자동화 시스템",
+    "platform_integration": "zapier_make_n8n_compatible"
+  },
+  "integration_platforms": {
+    "recommended": [
+      {
+        "platform": "Make.com (Integromat)",
+        "difficulty": "beginner",
+        "cost": "free tier available",
+        "capabilities": [
+          "이미지 업로드 감지",
+          "OpenAI API 연동",
+          "자동 워크플로우 실행",
+          "YouTube 업로드 자동화"
+        ],
+        "setup_guide": "./docs/make_setup.md"
+      },
+      {
+        "platform": "Zapier",
+        "difficulty": "beginner",
+        "cost": "free tier limited",
+        "capabilities": [
+          "Google Drive 연동",
+          "OpenAI 연동",
+          "자동화 트리거",
+          "이메일 알림"
+        ],
+        "setup_guide": "./docs/zapier_setup.md"
+      },
+      {
+        "platform": "n8n",
+        "difficulty": "intermediate",
+        "cost": "self-hosted free",
+        "capabilities": [
+          "완전한 커스터마이징",
+          "모든 API 연동 가능",
+          "복잡한 로직 구현",
+          "비용 최소화"
+        ],
+        "setup_guide": "./docs/n8n_setup.md"
+      }
+    ]
+  },
+  "trigger_methods": {
+    "google_drive": {
+      "description": "Google Drive 폴더에 이미지 업로드시 자동 실행",
+      "setup": {
+        "step_1": "Google Drive에 'YouTube_Shorts_Input' 폴더 생성",
+        "step_2": "Make.com/Zapier에서 Google Drive 트리거 설정",
+        "step_3": "새 파일 감지시 워크플로우 시작"
+      },
+      "recommended": true
+    },
+    "dropbox": {
+      "description": "Dropbox 폴더 모니터링",
+      "setup": {
+        "step_1": "Dropbox 폴더 생성",
+        "step_2": "자동화 플랫폼과 연동",
+        "step_3": "파일 업로드 감지"
+      }
+    },
+    "email": {
+      "description": "이메일로 이미지 전송시 자동 처리",
+      "setup": {
+        "step_1": "전용 이메일 주소 생성",
+        "step_2": "이메일 트리거 설정",
+        "step_3": "첨부파일 자동 추출"
+      }
+    },
+    "webhook": {
+      "description": "웹훅 URL로 이미지 전송",
+      "setup": {
+        "step_1": "자동화 플랫폼에서 웹훅 생성",
+        "step_2": "웹훅 URL로 POST 요청",
+        "step_3": "즉시 처리 시작"
+      }
+    }
+  },
+  "workflow_steps_nocode": [
+    {
+      "step": "1. 트리거",
+      "platform_action": "Watch Files (Google Drive) / New File",
+      "configuration": {
+        "folder": "YouTube_Shorts_Input",
+        "file_types": "image/*"
+      }
+    },
+    {
+      "step": "2. 이미지 분석",
+      "platform_action": "OpenAI Vision API",
+      "configuration": {
+        "model": "gpt-4o-mini",
+        "prompt": "{{prompts.keyword_analysis}}",
+        "image": "{{trigger.file}}"
+      }
+    },
+    {
+      "step": "3. 대본 생성",
+      "platform_action": "OpenAI Chat Completion",
+      "configuration": {
+        "model": "gpt-4o-mini",
+        "prompt": "{{prompts.script_generation}}",
+        "context": "{{step2.keywords}}"
+      }
+    },
+    {
+      "step": "4. 썸네일 생성",
+      "platform_action": "OpenAI DALL-E",
+      "configuration": {
+        "model": "dall-e-3",
+        "prompt": "{{prompts.thumbnail_design}}",
+        "size": "1024x1792"
+      }
+    },
+    {
+      "step": "5. 파일 저장",
+      "platform_action": "Google Drive / Create Files",
+      "configuration": {
+        "folder": "YouTube_Shorts_Output",
+        "files": [
+          "{{step3.script.json}}",
+          "{{step4.thumbnail.png}}"
+        ]
+      }
+    },
+    {
+      "step": "6. 알림 전송",
+      "platform_action": "Email / Send",
+      "configuration": {
+        "to": "your-email@example.com",
+        "subject": "숏폼 자동 생성 완료",
+        "body": "{{step3.script.title}}"
+      }
+    }
+  ],
+  "api_requirements": {
+    "openai": {
+      "required": true,
+      "api_key": "환경변수 또는 플랫폼 설정에 저장",
+      "models_used": ["gpt-4o-mini", "dall-e-3"],
+      "estimated_cost_per_video": "$0.10 - $0.20"
+    },
+    "google_drive": {
+      "required": false,
+      "alternative": "Dropbox, OneDrive 등",
+      "purpose": "파일 저장 및 트리거"
+    },
+    "youtube_api": {
+      "required": false,
+      "purpose": "자동 업로드 (선택사항)",
+      "setup_guide": "./docs/youtube_api.md"
+    }
+  },
+  "cost_breakdown": {
+    "monthly_estimate": {
+      "automation_platform": "$0 - $29 (Free tier ~ Pro)",
+      "openai_api": "$10 - $50 (usage based)",
+      "storage": "$0 (Google Drive 15GB free)",
+      "total": "$10 - $79/month"
+    },
+    "per_video_cost": {
+      "keyword_analysis": "$0.01",
+      "script_generation": "$0.02",
+      "thumbnail_generation": "$0.04",
+      "optimization": "$0.01",
+      "total_per_video": "$0.08",
+      "videos_per_month_100": "$8.00"
+    }
+  },
+  "optimization_tips": {
+    "reduce_costs": [
+      "배치 처리로 API 호출 최소화",
+      "캐싱 활용으로 중복 요청 방지",
+      "gpt-4o-mini 모델 사용 (gpt-4 대비 20배 저렴)",
+      "무료 tier 자동화 플랫폼 활용"
+    ],
+    "maximize_results": [
+      "A/B 테스트로 최적 키워드 발견",
+      "트렌딩 토픽 정기적 업데이트",
+      "고수익 카테고리 집중",
+      "업로드 시간 최적화"
+    ]
+  }
+}

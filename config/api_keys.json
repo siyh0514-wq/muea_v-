@@ -1,0 +1,225 @@
+{
+  "api_configuration": {
+    "description": "YouTube 숏폼 자동화에 필요한 모든 API 설정",
+    "version": "1.0.0"
+  },
+  "owned_apis": {
+    "description": "현재 보유 중인 API 키 목록",
+    "gemini_ai": {
+      "provider": "Google",
+      "status": "available",
+      "models": [
+        "gemini-1.5-flash",
+        "gemini-1.5-pro",
+        "gemini-pro-vision"
+      ],
+      "usage": [
+        "이미지 분석 (비전)",
+        "키워드 추출",
+        "대본 생성",
+        "콘텐츠 최적화"
+      ],
+      "cost": "매우 저렴 (GPT 대비 50% 이상 절감)",
+      "rate_limit": "60 requests/min (free tier)",
+      "priority": "primary"
+    },
+    "openai_gpt": {
+      "provider": "OpenAI",
+      "status": "available",
+      "models": [
+        "gpt-4o",
+        "gpt-4o-mini",
+        "gpt-4-vision-preview"
+      ],
+      "usage": [
+        "고급 대본 작성 (fallback)",
+        "복잡한 콘텐츠 분석",
+        "창의적 제목 생성"
+      ],
+      "cost": "중간 (gpt-4o-mini 권장)",
+      "rate_limit": "500 requests/min",
+      "priority": "secondary"
+    },
+    "google_apis": {
+      "provider": "Google Cloud",
+      "status": "available",
+      "services": [
+        "Google Drive API",
+        "YouTube Data API v3",
+        "Google Cloud Storage",
+        "Cloud Vision API"
+      ],
+      "usage": [
+        "파일 저장/관리",
+        "YouTube 자동 업로드",
+        "이미지 처리",
+        "OCR 및 라벨링"
+      ],
+      "cost": "무료 할당량 내 사용 가능",
+      "priority": "primary"
+    },
+    "google_search_console": {
+      "provider": "Google",
+      "status": "available",
+      "usage": [
+        "키워드 트렌드 분석",
+        "검색 성능 추적",
+        "SEO 최적화 데이터",
+        "클릭률 분석"
+      ],
+      "cost": "무료",
+      "priority": "high",
+      "integration_benefit": "실시간 트렌드 키워드 자동 추출"
+    },
+    "did_api": {
+      "provider": "D-ID",
+      "status": "available",
+      "capabilities": [
+        "AI 아바타 비디오 생성",
+        "텍스트를 말하는 영상으로 변환",
+        "립싱크 자동 생성",
+        "다양한 아바타 선택"
+      ],
+      "usage": [
+        "대본을 실제 말하는 비디오로 변환",
+        "AI 프레젠터 생성",
+        "정적 이미지에 생명 불어넣기"
+      ],
+      "cost": "크레딧 기반 (~$0.05-0.20/video)",
+      "priority": "critical",
+      "game_changer": "이 API로 완전 자동 비디오 생성 가능!"
+    }
+  },
+  "recommended_additional_apis": {
+    "high_priority": [
+      {
+        "api": "ElevenLabs API",
+        "purpose": "고품질 AI 음성 생성 (한국어 지원)",
+        "cost": "$5-$99/month (10,000 characters free)",
+        "benefit": "D-ID 대안 또는 보완, 더 자연스러운 음성",
+        "필수도": "선택사항 (D-ID가 있으면 불필요)"
+      },
+      {
+        "api": "Pexels/Unsplash API",
+        "purpose": "무료 스톡 이미지/비디오 소스",
+        "cost": "완전 무료",
+        "benefit": "배경 영상 및 이미지 자동 추가",
+        "필수도": "권장"
+      }
+    ],
+    "medium_priority": [
+      {
+        "api": "Canva API",
+        "purpose": "전문적인 썸네일 디자인",
+        "cost": "무료 tier 있음",
+        "benefit": "더 세련된 썸네일 자동 생성",
+        "필수도": "선택사항"
+      },
+      {
+        "api": "YouTube Analytics API",
+        "purpose": "성과 분석 및 피드백 루프",
+        "cost": "무료",
+        "benefit": "어떤 콘텐츠가 성공했는지 학습",
+        "필수도": "장기적으로 권장"
+      }
+    ],
+    "low_priority": [
+      {
+        "api": "TikTok API",
+        "purpose": "TikTok에도 동시 업로드",
+        "cost": "무료 (승인 필요)",
+        "benefit": "멀티플랫폼 배포",
+        "필수도": "선택사항"
+      }
+    ]
+  },
+  "optimal_cost_strategy": {
+    "description": "최소 비용으로 최대 효과를 내는 API 사용 전략",
+    "primary_workflow": {
+      "image_analysis": {
+        "primary": "Gemini-1.5-flash (무료 할당량)",
+        "fallback": "gpt-4o-mini",
+        "reason": "Gemini가 가장 저렴하고 빠름"
+      },
+      "keyword_extraction": {
+        "primary": "Google Search Console + Gemini",
+        "fallback": "GPT-4o-mini",
+        "reason": "실시간 트렌드 데이터 + AI 분석"
+      },
+      "script_generation": {
+        "primary": "Gemini-1.5-flash",
+        "fallback": "gpt-4o-mini",
+        "reason": "한국어 품질 우수, 비용 절감"
+      },
+      "video_generation": {
+        "primary": "D-ID API",
+        "no_fallback": "이것이 핵심!",
+        "reason": "대본을 실제 말하는 비디오로 변환"
+      },
+      "thumbnail_creation": {
+        "primary": "Cloud Vision API + Canva",
+        "fallback": "Gemini image generation",
+        "reason": "기존 이미지 보강이 DALL-E보다 저렴"
+      },
+      "youtube_upload": {
+        "primary": "YouTube Data API v3",
+        "reason": "직접 업로드 자동화"
+      }
+    }
+  },
+  "environment_variables": {
+    "description": "환경변수 또는 .env 파일에 설정",
+    "required": {
+      "GEMINI_API_KEY": "your-gemini-api-key-here",
+      "OPENAI_API_KEY": "your-openai-api-key-here",
+      "GOOGLE_CLOUD_PROJECT_ID": "your-project-id",
+      "GOOGLE_APPLICATION_CREDENTIALS": "path/to/service-account.json",
+      "DID_API_KEY": "your-d-id-api-key-here",
+      "YOUTUBE_API_KEY": "your-youtube-api-key-here",
+      "YOUTUBE_CLIENT_ID": "your-client-id",
+      "YOUTUBE_CLIENT_SECRET": "your-client-secret"
+    },
+    "optional": {
+      "ELEVENLABS_API_KEY": "optional-for-voice",
+      "PEXELS_API_KEY": "free-stock-media",
+      "CANVA_API_KEY": "optional-for-thumbnails"
+    }
+  },
+  "cost_estimation": {
+    "per_video_breakdown": {
+      "image_analysis_gemini": "$0.001",
+      "keyword_extraction_gemini": "$0.001",
+      "script_generation_gemini": "$0.002",
+      "video_generation_did": "$0.08",
+      "youtube_upload": "$0.00",
+      "google_search_console": "$0.00",
+      "total_per_video": "$0.084"
+    },
+    "monthly_projections": {
+      "100_videos": "$8.40",
+      "500_videos": "$42.00",
+      "1000_videos": "$84.00"
+    },
+    "savings_vs_manual": {
+      "manual_cost_per_video": "$5.00 - $20.00",
+      "automated_cost": "$0.084",
+      "savings_percentage": "99%",
+      "time_saved_per_video": "30-60 minutes"
+    }
+  },
+  "api_setup_priority": {
+    "immediate": [
+      "Gemini AI - 메인 AI 엔진",
+      "D-ID API - 비디오 생성 핵심",
+      "YouTube Data API - 업로드 자동화"
+    ],
+    "soon": [
+      "Google Search Console - SEO 최적화",
+      "Pexels API - 배경 미디어"
+    ],
+    "later": [
+      "ElevenLabs - 음성 품질 개선",
+      "YouTube Analytics - 성과 분석"
+    ]
+  }
+}

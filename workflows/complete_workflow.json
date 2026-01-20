@@ -1,0 +1,204 @@
+{
+  "complete_automation_workflow": {
+    "name": "완전 자동화 YouTube 숏폼 생성 시스템 (제품 리서치 포함)",
+    "version": "3.0.0",
+    "description": "이미지 업로드 → 제품 리서치 → 키워드 최적화 → 비디오 생성 → YouTube 업로드"
+  },
+  "user_workflow": {
+    "what_user_provides": {
+      "step_1": "이미지 업로드 (제품 사진 또는 일반 이미지)",
+      "step_2": "기본 대본 작성 (간단하게)",
+      "step_3": "파일을 input 폴더에 업로드",
+      "total_user_time": "2-3분"
+    },
+    "what_system_does": {
+      "phase_1_intelligent_detection": {
+        "name": "스마트 감지 (3초)",
+        "process": [
+          "Gemini가 이미지 분석",
+          "제품인지 일반 이미지인지 자동 판단",
+          "제품이면 → 제품 리서치 실행",
+          "일반 이미지면 → 바로 키워드 분석"
+        ]
+      },
+      "phase_2_product_research": {
+        "name": "제품 리서치 (15초, 제품인 경우만)",
+        "process": [
+          "제품명/브랜드 추출",
+          "역이미지 검색으로 판매처 찾기",
+          "가격 정보 수집",
+          "경쟁 분석",
+          "시장성 평가"
+        ],
+        "output": "판매 여부, 가격, 추천 콘텐츠 전략"
+      },
+      "phase_3_keyword_optimization": {
+        "name": "키워드 최적화 (10초)",
+        "process": [
+          "제품 리서치 결과 반영",
+          "고수익 키워드 추출",
+          "최상단 노출 키워드 조합",
+          "제목 자동 최적화",
+          "해시태그 15개 생성",
+          "SEO 설명 작성"
+        ],
+        "output": "완전 최적화된 메타데이터"
+      },
+      "phase_4_thumbnail_creation": {
+        "name": "썸네일 생성 (5초)",
+        "process": [
+          "원본 이미지 처리",
+          "최적화된 텍스트 오버레이",
+          "고대비 디자인 적용",
+          "9:16 비율 최적화"
+        ],
+        "output": "클릭률 높은 썸네일"
+      },
+      "phase_5_video_generation": {
+        "name": "비디오 생성 (5-8분)",
+        "process": [
+          "D-ID API에 이미지 + 대본 전송",
+          "AI 아바타가 대본 읽기",
+          "립싱크 자동 생성",
+          "완성된 비디오 다운로드"
+        ],
+        "output": "말하는 비디오 (MP4)"
+      },
+      "phase_6_youtube_upload": {
+        "name": "YouTube 업로드 (1분)",
+        "process": [
+          "최적화된 제목/설명/해시태그 적용",
+          "썸네일 자동 설정",
+          "YouTube에 업로드",
+          "제품인 경우 구매 링크 추가"
+        ],
+        "output": "YouTube 비디오 URL"
+      },
+      "phase_7_reporting": {
+        "name": "리포트 생성 (2초)",
+        "process": [
+          "전체 프로세스 요약",
+          "최적화 점수",
+          "예상 성과",
+          "개선 제안"
+        ],
+        "output": "상세 리포트 + 이메일 알림"
+      }
+    },
+    "total_automation_time": "6-10분",
+    "user_involvement": "0% (완전 자동)"
+  },
+  "example_scenarios": {
+    "scenario_1_product_review": {
+      "user_input": {
+        "image": "무선 이어폰 제품 사진",
+        "script": "이 이어폰 정말 좋아요. 음질 최고!"
+      },
+      "system_detection": "제품으로 인식 ✓",
+      "research_result": {
+        "product_name": "Apple AirPods Pro 2세대",
+        "selling": true,
+        "platforms": ["쿠팡: 329,000원", "네이버: 335,000원"],
+        "competition": "high",
+        "recommendation": "가격 비교 리뷰"
+      },
+      "optimization_result": {
+        "original_title": "이 이어폰 정말 좋아요",
+        "optimized_title": "에어팟 프로 2세대 솔직 리뷰 | 329,000원 최저가 발견 | 1분만에 보는 장단점 | 구매 전 필수 시청",
+        "hashtags": ["#에어팟", "#프로", "#이어폰추천", "#가격비교", "#리뷰", "#애플", "#무선이어폰", "#노이즈캔슬링", "#가성비", "#꿀팁", "#2024", "#최저가", "#shorts", "#숏폼", "#구매가이드"],
+        "description": "에어팟 프로 2세대를 실제로 사용해본 솔직한 리뷰입니다. 쿠팡 329,000원 최저가 정보와 함께 장단점을 1분만에 알려드려요.\n\n💰 최저가 정보:\n✅ 쿠팡: 329,000원\n✅ 네이버쇼핑: 335,000원\n\n⭐ 주요 특징:\n✔️ 액티브 노이즈 캔슬링 2배 향상\n✔️ 최대 6시간 재생\n✔️ 공간 음향 지원\n\n🔗 구매 링크: [쿠팡 파트너스 링크]\n\n구독과 좋아요 부탁드려요!"
+      },
+      "expected_performance": {
+        "views": "50,000+",
+        "ctr": "8-12%",
+        "estimated_revenue": "$50-100",
+        "affiliate_commission": "$10-30"
+      }
+    },
+    "scenario_2_general_content": {
+      "user_input": {
+        "image": "아침 풍경 사진",
+        "script": "성공하는 사람들의 아침 루틴"
+      },
+      "system_detection": "일반 이미지 (비제품)",
+      "research_result": "제품 리서치 건너뛰기",
+      "optimization_result": {
+        "original_title": "성공하는 사람들의 아침 루틴",
+        "optimized_title": "성공한 사람들의 아침 루틴 공개 | 1분만에 보는 인생 바꾸는 습관 | 따라하면 성공",
+        "hashtags": ["#아침루틴", "#자기계발", "#성공습관", "#생산성", "#루틴", "#꿀팁", "#1분만에", "#인생조언", "#자기관리", "#동기부여", "#2024", "#shorts", "#숏폼", "#라이프스타일", "#성공"],
+        "description": "성공한 사람들이 실제로 하는 아침 루틴을 공개합니다..."
+      },
+      "expected_performance": {
+        "views": "30,000+",
+        "ctr": "6-10%",
+        "estimated_revenue": "$30-60"
+      }
+    },
+    "scenario_3_unknown_product": {
+      "user_input": {
+        "image": "희귀한 빈티지 제품",
+        "script": "이 제품 아시는 분?"
+      },
+      "system_detection": "제품으로 인식 ✓",
+      "research_result": {
+        "product_name": "인식 불가 또는 미판매",
+        "selling": false,
+        "recommendation": "희귀템, 빈티지, 단종 제품 콘텐츠"
+      },
+      "optimization_result": {
+        "optimized_title": "이 희귀한 제품 아시나요? | 단종된 전설의 아이템 | 충격적인 가격 | 구하기 어려운 레어템",
+        "content_angle": "희소성 강조, 대체 제품 추천",
+        "monetization": "유사 제품 제휴 링크"
+      }
+    }
+  },
+  "cost_breakdown_with_research": {
+    "per_video_cost": {
+      "product_detection_gemini": "$0.001",
+      "product_research_google": "$0.002",
+      "keyword_optimization_gemini": "$0.003",
+      "thumbnail_generation": "$0.00",
+      "video_generation_did": "$0.08",
+      "youtube_upload": "$0.00",
+      "total": "$0.086"
+    },
+    "monthly_estimate_100_videos": {
+      "automation_cost": "$8.60",
+      "time_saved": "50-100 hours",
+      "potential_revenue": "$3,000-5,000",
+      "roi": "35,000-58,000%"
+    }
+  },
+  "competitive_advantages": {
+    "vs_manual_creation": {
+      "time": "2-3분 vs 1-2시간",
+      "cost": "$0.086 vs $20-50",
+      "quality": "AI 최적화 vs 수동",
+      "consistency": "100% vs 변동적",
+      "scalability": "무제한 vs 제한적"
+    },
+    "vs_other_automation": {
+      "product_research": "자동 ✓ vs 수동 ✗",
+      "keyword_optimization": "AI 기반 ✓ vs 템플릿 기반 ✗",
+      "market_analysis": "실시간 ✓ vs 고정 데이터 ✗",
+      "monetization_ready": "제휴 링크 자동 ✓ vs 수동 ✗"
+    }
+  },
+  "output_files": {
+    "research_report": "output/reports/{timestamp}_research.json",
+    "optimized_metadata": "output/optimized/{timestamp}_metadata.json",
+    "thumbnail": "output/thumbnails/{timestamp}_thumbnail.png",
+    "video": "output/videos/{timestamp}_final.mp4",
+    "youtube_link": "output/youtube/{timestamp}_link.txt",
+    "full_report": "output/reports/{timestamp}_complete_report.json"
+  },
+  "success_metrics": {
+    "automation_rate": "100%",
+    "processing_time": "6-10분",
+    "cost_per_video": "$0.086",
+    "expected_ctr": "6-12%",
+    "expected_views": "10,000-50,000",
+    "expected_revenue_per_video": "$10-100",
+    "scalability": "무제한"
+  }
+}

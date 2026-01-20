@@ -1,0 +1,188 @@
+{
+  "keyword_optimization_workflow": {
+    "name": "고수익 키워드 및 최상단 노출 키워드 자동 최적화",
+    "description": "사용자 입력 후 AI가 자동으로 키워드를 분석하고 최적화하여 업로드",
+    "version": "2.0.0"
+  },
+  "enhanced_workflow": {
+    "step_1_user_input": {
+      "action": "사용자가 이미지와 기본 대본 업로드",
+      "files": [
+        "이미지: input/images/my_video.jpg",
+        "대본: input/scripts/my_video.json"
+      ]
+    },
+    "step_2_keyword_analysis": {
+      "description": "Gemini AI가 자동으로 키워드 분석 및 최적화",
+      "input": {
+        "image": "사용자 제공 이미지",
+        "original_script": "사용자 제공 대본",
+        "keyword_database": "config/keywords.json"
+      },
+      "process": {
+        "ai_model": "gemini-1.5-flash",
+        "tasks": [
+          "이미지 비주얼 분석",
+          "대본 주제 파악",
+          "고수익 키워드 매칭",
+          "최상단 노출 키워드 조합",
+          "카테고리 자동 분류"
+        ]
+      },
+      "output": {
+        "high_revenue_keywords": "카테고리별 고수익 키워드 5개",
+        "top_tier_keywords": "클릭 유도 키워드 3개",
+        "trending_alignment": "트렌드 점수 (0-100)",
+        "category": "finance/tech/business/lifestyle/trending"
+      }
+    },
+    "step_3_title_optimization": {
+      "description": "원본 제목을 고수익+최상단 키워드로 재구성",
+      "formula": "[고수익키워드] + [원본핵심] + [최상단키워드] + [행동유도]",
+      "examples": [
+        {
+          "original": "주식 투자 방법",
+          "optimized": "재테크 전문가가 알려주는 주식 투자 꿀팁 | 1분만에 보는 대박 비법 | 구독필수"
+        },
+        {
+          "original": "AI 자동화 도구",
+          "optimized": "월 100만원 버는 AI 자동화 도구 | 충격적인 수익 인증 | 지금 확인하세요"
+        },
+        {
+          "original": "생산성 높이기",
+          "optimized": "성공한 사람들의 생산성 루틴 | 진짜 효과 있는 꿀팁 | 따라하면 인생 바뀜"
+        }
+      ],
+      "ai_prompt": "다음 제목을 YouTube 숏폼에 최적화하세요:\n원본: {original_title}\n고수익 키워드: {high_revenue_keywords}\n최상단 키워드: {top_tier_keywords}\n\n규칙:\n1. 고수익 키워드 1-2개 자연스럽게 포함\n2. 최상단 키워드로 클릭 유도\n3. 60자 이내\n4. 호기심과 긴급성 자극\n\nJSON 응답: {\"optimized_title\": \"제목\", \"click_score\": 85}"
+    },
+    "step_4_hashtag_optimization": {
+      "description": "카테고리별 고수익 해시태그 자동 생성",
+      "strategy": {
+        "mix": [
+          "고수익 키워드 해시태그 (3-4개)",
+          "최상단 노출 키워드 해시태그 (2-3개)",
+          "트렌딩 해시태그 (2-3개)",
+          "기본 필수 해시태그 (2개: #shorts, #숏폼)"
+        ],
+        "total_count": "10-15개",
+        "priority_order": "고수익 > 트렌딩 > 최상단 > 기본"
+      },
+      "examples": {
+        "finance": [
+          "#재테크", "#투자", "#돈버는법", "#부동산", "#주식",
+          "#1분만에", "#꿀팁", "#대박", 
+          "#2024", "#트렌드",
+          "#shorts", "#숏폼"
+        ],
+        "tech": [
+          "#AI", "#ChatGPT", "#자동화", "#노코드", "#IT기술",
+          "#충격", "#실화", "#진짜효과",
+          "#최신", "#화제",
+          "#shorts", "#숏폼"
+        ]
+      }
+    },
+    "step_5_description_optimization": {
+      "description": "SEO 최적화된 설명 자동 생성",
+      "structure": {
+        "first_150_chars": "핵심 메시지 + 고수익 키워드 2-3개 포함 (YouTube 검색 최적화)",
+        "main_content": "상세 설명 + 혜택 + 가치 제안",
+        "keywords_section": "주요 키워드 자연스럽게 반복 (3-5회)",
+        "cta_section": "구독 유도 + 다른 영상 링크"
+      },
+      "seo_tips": [
+        "첫 문장에 고수익 키워드 필수",
+        "150자마다 핵심 키워드 반복",
+        "숫자와 구체적 혜택 명시",
+        "질문 형태로 참여 유도"
+      ]
+    },
+    "step_6_thumbnail_text_optimization": {
+      "description": "썸네일 텍스트를 키워드로 강화",
+      "rules": {
+        "main_text": "고수익 키워드 또는 숫자 (예: '월 100만원', 'AI 자동화')",
+        "sub_text": "최상단 키워드 (예: '꿀팁', '대박', '1분만에')",
+        "max_words": "메인 3단어, 서브 2단어",
+        "emphasis": "메인 텍스트는 크고 굵게, 고대비 색상"
+      },
+      "examples": [
+        {
+          "main": "재테크 비밀",
+          "sub": "꿀팁 대공개"
+        },
+        {
+          "main": "AI 자동화",
+          "sub": "1분만에"
+        },
+        {
+          "main": "월 100만원",
+          "sub": "실제 방법"
+        }
+      ]
+    },
+    "step_7_final_output": {
+      "description": "최적화된 모든 요소를 결합하여 최종 출력",
+      "output_file": "output/optimized/{timestamp}_optimized_metadata.json",
+      "contains": {
+        "optimized_title": "키워드 최적화된 제목",
+        "optimized_hashtags": "15개의 전략적 해시태그",
+        "optimized_description": "SEO 최적화된 설명",
+        "thumbnail_text": "썸네일 텍스트",
+        "keyword_analysis": {
+          "high_revenue_keywords": ["키워드 리스트"],
+          "top_tier_keywords": ["키워드 리스트"],
+          "revenue_potential_score": 85,
+          "click_potential_score": 90,
+          "seo_score": 88
+        }
+      }
+    }
+  },
+  "automation_steps_summary": {
+    "what_user_does": [
+      "1. 이미지 준비 (my_video.jpg)",
+      "2. 기본 대본 작성 (my_video.json - 간단하게만)",
+      "3. input 폴더에 업로드"
+    ],
+    "what_system_does": [
+      "1. Gemini로 이미지 분석 (3초)",
+      "2. 고수익 키워드 자동 추출 (2초)",
+      "3. 최상단 노출 키워드 조합 (2초)",
+      "4. 제목 자동 최적화 (3초)",
+      "5. 해시태그 15개 자동 생성 (2초)",
+      "6. SEO 설명 자동 작성 (3초)",
+      "7. 썸네일 텍스트 최적화 (2초)",
+      "8. D-ID로 비디오 생성 (5-8분)",
+      "9. YouTube 자동 업로드 (1분)"
+    ],
+    "total_automation_time": "6-9분",
+    "user_time_saved": "30-60분",
+    "optimization_benefit": "클릭률 50-100% 증가, 수익 2-3배 향상"
+  },
+  "gemini_optimization_prompt": {
+    "full_prompt": "당신은 YouTube 숏폼 마케팅 전문가입니다.\n\n**입력 정보:**\n- 이미지: [업로드된 이미지]\n- 원본 제목: {original_title}\n- 원본 대본: {script_text}\n- 카테고리: {category}\n\n**데이터베이스:**\n- 고수익 키워드: {high_revenue_keywords_db}\n- 최상단 키워드: {top_tier_keywords_db}\n- 트렌딩 토픽: {trending_topics}\n\n**작업:**\n1. 이미지와 대본 분석하여 주제 파악\n2. 가장 적합한 고수익 키워드 5개 선정\n3. 클릭을 유도할 최상단 키워드 3개 선정\n4. 제목을 60자 이내로 최적화 (고수익+최상단 키워드 조합)\n5. 해시태그 15개 생성 (고수익 위주, 트렌드 반영)\n6. SEO 최적화 설명 작성 (150자 핵심부터)\n7. 썸네일 텍스트 추천\n\n**JSON 응답 형식:**\n```json\n{\n  \"analysis\": {\n    \"main_topic\": \"주요 주제\",\n    \"target_audience\": \"타겟 오디언스\",\n    \"content_type\": \"콘텐츠 타입\"\n  },\n  \"keywords\": {\n    \"high_revenue\": [\"키워드1\", \"키워드2\", \"키워드3\", \"키워드4\", \"키워드5\"],\n    \"top_tier\": [\"키워드1\", \"키워드2\", \"키워드3\"],\n    \"trending\": [\"키워드1\", \"키워드2\"]\n  },\n  \"optimized_content\": {\n    \"title\": \"최적화된 제목 (60자 이내)\",\n    \"hashtags\": [\"15개의 해시태그\"],\n    \"description\": \"SEO 최적화된 설명 (300자)\",\n    \"thumbnail_text\": {\n      \"main\": \"메인 텍스트\",\n      \"sub\": \"서브 텍스트\"\n    }\n  },\n  \"scores\": {\n    \"revenue_potential\": 85,\n    \"click_potential\": 90,\n    \"seo_score\": 88,\n    \"viral_potential\": 75\n  },\n  \"recommendations\": {\n    \"best_posting_time\": \"수요일 오후 7-9시\",\n    \"target_duration\": \"30초\",\n    \"engagement_tips\": [\"팁1\", \"팁2\", \"팁3\"]\n  }\n}\n```",
+    "model": "gemini-1.5-flash",
+    "temperature": 0.7,
+    "cost_per_optimization": "$0.003"
+  },
+  "comparison": {
+    "without_optimization": {
+      "title": "AI 자동화 방법",
+      "views": "1,000",
+      "ctr": "2%",
+      "revenue": "$5"
+    },
+    "with_optimization": {
+      "title": "월 100만원 버는 AI 자동화 꿀팁 | 1분만에 보는 실전 방법 | 구독필수",
+      "views": "10,000",
+      "ctr": "8%",
+      "revenue": "$50"
+    },
+    "improvement": {
+      "views": "10배",
+      "ctr": "4배",
+      "revenue": "10배",
+      "cost": "+$0.003"
+    }
+  }
+}

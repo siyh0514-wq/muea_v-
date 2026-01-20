@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유튜브 숏폼 대본 생성기 - 무료</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: inherit;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .result.show {
+            display: block;
+        }
+        
+        .result h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .result-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            margin-top: 10px;
+            background: #4CAF50;
+            padding: 10px 20px;
+            font-size: 14px;
+            width: auto;
+        }
+        
+        .free-badge {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 유튜브 숏폼 대본 생성기</h1>
+        <div class="subtitle">
+            <span class="free-badge">✨ 100% 무료 | 설치 불필요 | API 키 불필요</span>
+        </div>
+        
+        <div class="input-group">
+            <label>📱 제품명 또는 주제</label>
+            <input type="text" id="product" placeholder="예: 에어팟 프로, 청년도약계좌, 아이폰 15" />
+        </div>
+        
+        <div class="input-group">
+            <label>🎯 키워드 (쉼표로 구분)</label>
+            <input type="text" id="keywords" placeholder="예: 최저가, 쿠폰, 할인코드" />
+        </div>
+        
+        <div class="input-group">
+            <label>⏱️ 영상 길이</label>
+            <select id="duration">
+                <option value="short">짧게 (10-15초)</option>
+                <option value="medium" selected>보통 (20-30초)</option>
+                <option value="long">길게 (40-60초)</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label>🌍 언어</label>
+            <select id="language">
+                <option value="ko" selected>한국어</option>
+                <option value="zh">中文 (중국어)</option>
+                <option value="en">English (영어)</option>
+                <option value="ja">日本語 (일본어)</option>
+            </select>
+        </div>
+        
+        <button onclick="generateScript()">🚀 대본 생성하기</button>
+        
+        <div class="result" id="result">
+            <h3>✅ 생성된 대본</h3>
+            <div class="result-content" id="scriptContent"></div>
+            <button class="copy-btn" onclick="copyScript()">📋 복사하기</button>
+        </div>
+    </div>
+    
+    <script>
+        const templates = {
+            ko: {
+                short: {
+                    intro: ["안녕하세요~", "여러분!", "오늘은요~"],
+                    body: ["{product} 이야기입니다!", "{keywords}까지 있어요!", "정말 대박이죠?"],
+                    outro: ["구독 좋아요!", "꼭 확인하세요!", "놓치지 마세요!"]
+                },
+                medium: {
+                    intro: ["안녕하세요~ 오늘은", "여러분! 오늘 소개할 건"],
+                    body: ["{product}에 대해 이야기해볼게요.", "{keywords} 관련 정보도 있으니", "끝까지 봐주세요!"],
+                    outro: ["도움이 되셨다면 좋아요와 구독 부탁드려요!", "댓글로 의견 남겨주세요~"]
+                },
+                long: {
+                    intro: ["안녕하세요! 오늘은 여러분들께"],
+                    body: ["{product}에 대해 자세히 알려드릴게요.", "{keywords} 이런 키워드들로 검색하시면", "더 많은 정보를 얻으실 수 있어요.", "제 경험상 정말 유용했거든요."],
+                    outro: ["이 영상이 도움이 되셨다면", "좋아요와 구독 부탁드립니다!", "다음 영상에서 또 만나요~"]
+                }
+            },
+            zh: {
+                short: {
+                    intro: ["大家好~", "今天说说"],
+                    body: ["{product}！", "{keywords}都有！", "真的很棒！"],
+                    outro: ["点赞订阅！", "别忘了！"]
+                },
+                medium: {
+                    intro: ["大家好~ 今天说说"],
+                    body: ["{product}。", "关于{keywords}的信息", "一定要看到最后！"],
+                    outro: ["觉得有帮助的话，请点赞订阅！", "评论区见~"]
+                },
+                long: {
+                    intro: ["大家好！今天给大家详细介绍"],
+                    body: ["{product}。", "关于{keywords}这些关键词", "大家可以搜索了解更多。", "我自己用过，真的很不错。"],
+                    outro: ["如果这个视频对你有帮助", "请点赞订阅支持一下！", "下期视频见~"]
+                }
+            },
+            en: {
+                short: {
+                    intro: ["Hey there!", "Today we're talking about"],
+                    body: ["{product}!", "With {keywords}!", "Amazing, right?"],
+                    outro: ["Like & Subscribe!", "Don't miss it!"]
+                },
+                medium: {
+                    intro: ["Hey everyone! Today I'm covering"],
+                    body: ["{product}.", "Info about {keywords} included,", "so watch till the end!"],
+                    outro: ["Like & Subscribe if this was helpful!", "Comment below~"]
+                },
+                long: {
+                    intro: ["Hey everyone! Today I'm going to tell you all about"],
+                    body: ["{product}.", "You can search for {keywords}", "to find more information.", "I've tried it myself and it's really great."],
+                    outro: ["If this video was helpful,", "please like and subscribe!", "See you in the next video~"]
+                }
+            },
+            ja: {
+                short: {
+                    intro: ["こんにちは~", "今日は"],
+                    body: ["{product}について！", "{keywords}もあります！", "すごいでしょう？"],
+                    outro: ["いいねとチャンネル登録お願いします！", "お見逃しなく！"]
+                },
+                medium: {
+                    intro: ["皆さん、こんにちは~ 今日は"],
+                    body: ["{product}についてお話しします。", "{keywords}の情報も含まれているので", "最後まで見てください！"],
+                    outro: ["役に立ったらいいねとチャンネル登録お願いします！", "コメントお待ちしています~"]
+                },
+                long: {
+                    intro: ["皆さん、こんにちは！今日は"],
+                    body: ["{product}について詳しくご紹介します。", "{keywords}というキーワードで検索すると", "もっと多くの情報が得られます。", "私も使ってみて本当に良かったです。"],
+                    outro: ["この動画が役に立ったら", "いいねとチャンネル登録をお願いします！", "次の動画でお会いしましょう~"]
+                }
+            }
+        };
+        
+        function generateScript() {
+            const product = document.getElementById('product').value.trim();
+            const keywords = document.getElementById('keywords').value.trim();
+            const duration = document.getElementById('duration').value;
+            const language = document.getElementById('language').value;
+            
+            if (!product) {
+                alert('제품명 또는 주제를 입력해주세요!');
+                return;
+            }
+            
+            const template = templates[language][duration];
+            let script = '';
+            
+            // 인트로
+            script += template.intro[Math.floor(Math.random() * template.intro.length)] + ' ';
+            
+            // 본문
+            template.body.forEach(line => {
+                const processedLine = line
+                    .replace('{product}', product)
+                    .replace('{keywords}', keywords || '다양한 혜택');
+                script += processedLine + ' ';
+            });
+            
+            // 아웃트로
+            script += '\n\n';
+            template.outro.forEach(line => {
+                script += line + ' ';
+            });
+            
+            document.getElementById('scriptContent').textContent = script.trim();
+            document.getElementById('result').classList.add('show');
+            
+            // 스크롤
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyScript() {
+            const script = document.getElementById('scriptContent').textContent;
+            navigator.clipboard.writeText(script).then(() => {
+                alert('✅ 복사되었습니다!');
+            });
+        }
+    </script>
+</body>
+</html>

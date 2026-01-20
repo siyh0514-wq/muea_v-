@@ -1,0 +1,88 @@
+{
+  "system_prompts": {
+    "description": "YouTube 숏폼 자동화를 위한 AI 프롬프트 시스템",
+    "version": "1.0.0"
+  },
+  "keyword_analysis": {
+    "name": "고수익 키워드 분석",
+    "prompt_template": "당신은 YouTube 숏폼 전문 마케터입니다. 제공된 이미지를 분석하고 다음을 수행하세요:\n\n1. 이미지의 주제와 내용 파악\n2. 관련된 고수익 키워드 5개 선정 (재테크, AI, 창업, 자기계발 등)\n3. 최상단 노출 키워드 3개 추천 (꿀팁, 1분만에, 대박 등)\n4. 트렌딩 토픽과의 연관성 분석\n\n이미지: {image_description}\n카테고리: {category}\n\n다음 JSON 형식으로 응답:\n{\n  \"main_topic\": \"주요 주제\",\n  \"high_revenue_keywords\": [\"키워드1\", \"키워드2\", \"키워드3\", \"키워드4\", \"키워드5\"],\n  \"top_tier_keywords\": [\"키워드1\", \"키워드2\", \"키워드3\"],\n  \"trending_alignment\": \"트렌드 연관성 점수 (0-100)\",\n  \"category\": \"카테고리명\",\n  \"revenue_potential\": \"수익 잠재력 (low/medium/high/very-high)\"\n}",
+    "parameters": {
+      "temperature": 0.7,
+      "max_tokens": 1000,
+      "model": "gpt-4o-mini"
+    }
+  },
+  "script_generation": {
+    "name": "대본 생성",
+    "prompt_template": "당신은 YouTube 숏폼 대본 작가입니다. 다음 정보를 바탕으로 매력적인 15-60초 대본을 작성하세요:\n\n이미지 설명: {image_description}\n키워드: {keywords}\n주제: {topic}\n타겟 시청 시간: {target_duration}초\n\n대본 작성 규칙:\n1. 첫 3초에 시청자의 관심을 끌 것 (후킹)\n2. 명확한 메시지 전달\n3. 감정적 연결 포인트 포함\n4. 행동 유도(CTA) 포함\n5. 자연스러운 한국어 사용\n\n다음 JSON 형식으로 응답:\n{\n  \"title\": \"영상 제목 (60자 이내)\",\n  \"hook\": \"첫 3초 대사\",\n  \"main_content\": \"주요 내용 (3-5문장)\",\n  \"call_to_action\": \"마무리 및 행동 유도\",\n  \"full_script\": \"전체 대본\",\n  \"estimated_duration\": \"예상 시간(초)\",\n  \"hashtags\": [\"#해시태그1\", \"#해시태그2\", \"#해시태그3\"],\n  \"description\": \"영상 설명 (150자)\"\n}",
+    "parameters": {
+      "temperature": 0.8,
+      "max_tokens": 2000,
+      "model": "gpt-4o-mini"
+    }
+  },
+  "thumbnail_design": {
+    "name": "썸네일 디자인",
+    "prompt_template": "다음 조건으로 YouTube 숏폼 썸네일을 디자인해주세요:\n\n주제: {topic}\n키워드: {keywords}\n감정/분위기: {mood}\n\n디자인 요구사항:\n1. 비율: 9:16 (1080x1920)\n2. 텍스트: 최소화하되 강렬한 메시지\n3. 색상: 고대비, 눈에 잘 띄는 색상\n4. 스타일: 현대적이고 전문적\n5. 클릭을 유도하는 비주얼\n\n이미지 프롬프트: {base_image_description}\n\n추가 텍스트 오버레이:\n- 메인 텍스트: {main_text}\n- 서브 텍스트: {sub_text}",
+    "parameters": {
+      "size": "1024x1792",
+      "quality": "standard",
+      "model": "dall-e-3"
+    },
+    "style_guidelines": {
+      "text_overlay": {
+        "main_text_size": "bold, 72-96pt",
+        "sub_text_size": "48-60pt",
+        "font_style": "Sans-serif, 굵은 글씨",
+        "color_scheme": "고대비 (흰색/검정, 노란색/검정 등)",
+        "position": "상단 1/3 또는 중앙"
+      },
+      "visual_elements": {
+        "background": "단순하면서 임팩트 있는 배경",
+        "focus": "주요 객체를 중앙에 배치",
+        "contrast": "최소 4.5:1 대비율",
+        "emotion": "긍정적이고 에너지 넘치는 분위기"
+      }
+    }
+  },
+  "content_optimization": {
+    "name": "콘텐츠 최적화",
+    "prompt_template": "다음 콘텐츠를 YouTube 알고리즘에 최적화하세요:\n\n제목: {title}\n대본: {script}\n키워드: {keywords}\n\n최적화 항목:\n1. 제목 개선 (클릭률 향상)\n2. 해시태그 최적화 (5-10개)\n3. 설명 작성 (SEO 최적화)\n4. 카테고리 분류\n5. 타겟 오디언스 정의\n\n다음 JSON 형식으로 응답:\n{\n  \"optimized_title\": \"최적화된 제목\",\n  \"hashtags\": [\"해시태그 리스트\"],\n  \"description\": \"SEO 최적화된 설명\",\n  \"category\": \"카테고리\",\n  \"target_audience\": \"타겟 오디언스\",\n  \"best_posting_time\": \"최적 업로드 시간\",\n  \"engagement_tips\": [\"참여 유도 팁들\"]\n}",
+    "parameters": {
+      "temperature": 0.6,
+      "max_tokens": 1500,
+      "model": "gpt-4o-mini"
+    }
+  },
+  "batch_processing": {
+    "name": "배치 프로세싱",
+    "description": "여러 이미지를 한번에 처리하는 워크플로우",
+    "workflow": [
+      {
+        "step": 1,
+        "action": "image_analysis",
+        "prompt_type": "keyword_analysis"
+      },
+      {
+        "step": 2,
+        "action": "script_creation",
+        "prompt_type": "script_generation"
+      },
+      {
+        "step": 3,
+        "action": "thumbnail_design",
+        "prompt_type": "thumbnail_design"
+      },
+      {
+        "step": 4,
+        "action": "content_optimization",
+        "prompt_type": "content_optimization"
+      },
+      {
+        "step": 5,
+        "action": "video_assembly",
+        "prompt_type": "none"
+      }
+    ]
+  }
+}
