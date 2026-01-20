@@ -6,13 +6,40 @@
 
 **처음 사용하시나요? 아래 가이드를 먼저 읽어보세요!**
 
-| 가이드 | 설명 | 링크 |
-|--------|------|------|
-| 🚀 **즉시 시작** | 3단계로 바로 시작하기 | [START_NOW.md](./START_NOW.md) |
-| 📄 **설명란 자동 생성** ⭐NEW | YouTube 설명란 사용법 | [DESCRIPTION_GUIDE.md](./docs/DESCRIPTION_GUIDE.md) |
-| 🔑 **API 설정** | API 키 발급 및 설정 | [API_SETUP_GUIDE.md](./docs/API_SETUP_GUIDE.md) |
-| 🌐 **웹 UI** | 클릭으로 키워드 선택 | [WEB_UI_GUIDE.md](./docs/WEB_UI_GUIDE.md) |
-| ⚙️ **자동화 구조** | 시스템 작동 원리 | [AUTOMATION_STRUCTURE.md](./AUTOMATION_STRUCTURE.md) |
+| 가이드 | 설명 | 중요도 |
+|--------|------|--------|
+| 🔧 **설치 가이드** ⭐ | 뭘 설치해야 하나요? | ⭐⭐⭐ **필수!** |
+| 🚀 **즉시 시작** | 3단계로 바로 시작하기 | ⭐⭐⭐ |
+| 📄 **설명란 자동 생성** | YouTube 설명란 사용법 | ⭐⭐⭐ |
+| 🔑 **API 설정** | API 키 발급 및 설정 | ⭐⭐⭐ |
+| 🌐 **웹 UI** | 클릭으로 키워드 선택 | ⭐⭐ |
+| ⚙️ **자동화 구조** | 시스템 작동 원리 | ⭐ |
+
+**링크**:
+- [🔧 설치 가이드 (INSTALLATION.md)](./INSTALLATION.md) ⭐ **먼저 보세요!**
+- [🚀 즉시 시작 (START_NOW.md)](./START_NOW.md)
+- [📄 설명란 가이드 (DESCRIPTION_GUIDE.md)](./docs/DESCRIPTION_GUIDE.md)
+- [🔑 API 설정 (API_SETUP_GUIDE.md)](./docs/API_SETUP_GUIDE.md)
+- [🌐 웹 UI (WEB_UI_GUIDE.md)](./docs/WEB_UI_GUIDE.md)
+- [⚙️ 자동화 구조 (AUTOMATION_STRUCTURE.md)](./AUTOMATION_STRUCTURE.md)
+
+---
+
+## ⚡ 빠른 설치 (3줄)
+
+```bash
+# 1. Python 패키지 설치
+pip install -r requirements.txt
+
+# 2. API 키 설정 (.env 파일)
+# GEMINI_API_KEY=여기에_키_입력
+# DID_API_KEY=여기에_키_입력
+
+# 3. 실행!
+python main.py
+```
+
+**자세한 설치 방법**: [INSTALLATION.md](./INSTALLATION.md) 📖
 
 ---
 
