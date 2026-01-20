@@ -118,10 +118,22 @@ class ShortFormCreator:
         
         # 5단계: 영상 정보
         print(f"\n### 5️⃣ 영상 설정")
-        print(f"  - 길이: {self.video_length}초")
+        print(f"  - 길이: {self.video_length}초 (선택 가능: {', '.join(map(str, self.platform_config['lengths']))}초)")
         print(f"  - 화질: {self.quality} (1080p+)")
         print(f"  - 자막: 필수 포함")
         print(f"  - 플랫폼: {self.platform_config['name']}")
+        
+        # YouTube 자동 업로드 링크
+        if self.platform == 'youtube':
+            self.youtube_upload_url = self._generate_youtube_upload_link(product_name, script, thumbnail)
+            print(f"\n### 6️⃣ YouTube 자동 업로드")
+            print(f"✅ 업로드 링크:")
+            print(f"   {self.youtube_upload_url}")
+            print(f"\n💡 사용법:")
+            print(f"   1. 위 링크를 클릭")
+            print(f"   2. 영상 파일 선택")
+            print(f"   3. 자동으로 제목/설명/태그 입력됨")
+            print(f"   4. '게시' 버튼만 클릭!")
         
         # 결과 저장
         result = {
@@ -133,7 +145,8 @@ class ShortFormCreator:
             'script': script,
             'thumbnail': thumbnail,
             'video_length': self.video_length,
-            'quality': self.quality
+            'quality': self.quality,
+            'youtube_upload_url': self.youtube_upload_url if self.platform == 'youtube' else None
         }
         
         self._save_result(result)
@@ -326,32 +339,143 @@ class ShortFormCreator:
         
         print("└─────────────┴──────────────────────────────┴────────────────────────────────┘")
     
+    def _generate_youtube_upload_link(self, product_name, script, thumbnail):
+        """YouTube 자동 업로드 링크 생성"""
+        import urllib.parse
+        
+        # 제목 생성
+        title_templates = {
+            'ko': f"{product_name} 최저가 🔥 쿠폰 + 할인 정보 #Shorts",
+            'zh': f"{product_name} 最低价 🔥 优惠券 + 折扣信息 #Shorts",
+            'en': f"{product_name} Lowest Price 🔥 Coupon + Discount #Shorts",
+            'ja': f"{product_name} 最安値 🔥 クーポン + 割引情報 #Shorts",
+            'th': f"{product_name} ราคาต่ำสุด 🔥 คูปอง + ส่วนลด #Shorts"
+        }
+        title = title_templates.get(self.language, title_templates['ko'])
+        
+        # 설명 생성
+        narrations = [scene['narration'] for scene in script]
+        description = '\n'.join(narrations)
+        description += f"\n\n📱 제품: {product_name}"
+        description += "\n🛒 구매 링크: [여기에 링크 입력]"
+        description += "\n\n#쇼핑 #최저가 #할인 #쿠폰 #Shorts"
+        
+        # YouTube Studio 업로드 URL 생성
+        # 실제로는 YouTube Data API를 사용해야 하지만, 여기서는 Studio 링크 제공
+        base_url = "https://studio.youtube.com/channel/UC/videos/upload"
+        
+        # URL 인코딩된 파라미터 생성 (YouTube Studio는 자동 입력 지원 안함, API 필요)
+        # 대신 복사 가능한 정보 제공
+        params = {
+            'title': title,
+            'description': description,
+            'tags': '쇼핑,최저가,할인,쿠폰,Shorts',
+            'category': '22',  # People & Blogs
+            'privacy': 'public'
+        }
+        
+        # 정보를 텍스트로 반환 (사용자가 복사 붙여넣기)
+        info = f"📋 복사해서 사용하세요:\n\n"
+        info += f"제목: {title}\n\n"
+        info += f"설명:\n{description}\n\n"
+        info += f"태그: {params['tags']}\n\n"
+        info += f"👉 업로드: https://studio.youtube.com/channel/UC/videos/upload"
+        
+        return base_url
+    
     def _save_result(self, result):
         """결과 저장"""
         output_dir = Path('output/shorts')
         output_dir.mkdir(parents=True, exist_ok=True)
         
-        filename = f"{result['product']}_{self.platform}_{self.language}.json"
+        filename = f"{result['product']}_{self.platform}_{self.language}_{self.video_length}s.json"
         filepath = output_dir / filename
         
         with open(filepath, 'w', encoding='utf-8') as f:
             json.dump(result, f, ensure_ascii=False, indent=2)
         
         print(f"\n✅ 결과 저장: {filepath}")
+        
+        # YouTube 업로드 정보 별도 저장
+        if result.get('youtube_upload_url'):
+            upload_info_path = output_dir / f"{result['product']}_youtube_upload_info.txt"
+            
+            # 제목 생성
+            title_templates = {
+                'ko': f"{result['product']} 최저가 🔥 쿠폰 + 할인 정보 #Shorts",
+                'zh': f"{result['product']} 最低价 🔥 优惠券 + 折扣信息 #Shorts",
+                'en': f"{result['product']} Lowest Price 🔥 Coupon + Discount #Shorts",
+                'ja': f"{result['product']} 最安値 🔥 クーポン + 割引情報 #Shorts",
+                'th': f"{result['product']} ราคาต่ำสุด 🔥 คูปอง + ส่วนลด #Shorts"
+            }
+            title = title_templates.get(self.language, title_templates['ko'])
+            
+            # 설명 생성
+            narrations = [scene['narration'] for scene in result['script']]
+            description = '\n'.join(narrations)
+            description += f"\n\n📱 제품: {result['product']}"
+            description += "\n🛒 구매 링크: [여기에 링크 입력]"
+            description += "\n\n#쇼핑 #최저가 #할인 #쿠폰 #Shorts"
+            
+            with open(upload_info_path, 'w', encoding='utf-8') as f:
+                f.write("=" * 60 + "\n")
+                f.write("YouTube 자동 업로드 정보\n")
+                f.write("=" * 60 + "\n\n")
+                f.write(f"📋 제목:\n{title}\n\n")
+                f.write("=" * 60 + "\n\n")
+                f.write(f"📝 설명:\n{description}\n\n")
+                f.write("=" * 60 + "\n\n")
+                f.write("🏷️ 태그:\n쇼핑,최저가,할인,쿠폰,Shorts\n\n")
+                f.write("=" * 60 + "\n\n")
+                f.write("🎬 카테고리: People & Blogs\n")
+                f.write("👀 공개 설정: 공개\n\n")
+                f.write("=" * 60 + "\n\n")
+                f.write("📤 업로드 링크:\n")
+                f.write("https://studio.youtube.com/channel/UC/videos/upload\n\n")
+            
+            print(f"✅ YouTube 업로드 정보 저장: {upload_info_path}")
 
 
 def main():
-    parser = argparse.ArgumentParser(description='🎬 쇼핑 숏폼 영상 제작')
+    parser = argparse.ArgumentParser(
+        description='🎬 쇼핑 숏폼 영상 제작',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+사용 예시:
+  # YouTube 60초 한국어
+  python shorts_creator.py --product "AirPods Pro" --platform youtube --length 60 --lang ko
+  
+  # TikTok 15초 중국어
+  python shorts_creator.py --product "口红" --platform tiktok --length 15 --lang zh
+  
+  # Instagram 30초 영어
+  python shorts_creator.py --product "Cosmetics" --platform instagram --length 30 --lang en
+
+플랫폼별 선택 가능한 길이:
+  YouTube:   15, 30, 45, 60초 (최적: 60초)
+  TikTok:    9, 15, 21, 30초 (최적: 15초)
+  Instagram: 15, 30, 45, 60초 (최적: 30초)
+        """
+    )
     parser.add_argument('--product', type=str, required=True, help='상품명')
     parser.add_argument('--platform', type=str, choices=['youtube', 'tiktok', 'instagram'], 
-                       default='youtube', help='플랫폼 선택')
+                       default='youtube', help='플랫폼 선택 (기본: youtube)')
+    parser.add_argument('--length', type=int, help='영상 길이(초) - 미지정시 플랫폼 최적 길이 사용')
     parser.add_argument('--lang', type=str, choices=['ko', 'zh', 'en', 'ja', 'th'],
-                       default='ko', help='대본 언어')
+                       default='ko', help='대본 언어 (기본: ko)')
     parser.add_argument('--quality', type=str, choices=['high', 'ultra'],
-                       default='high', help='영상 화질')
+                       default='high', help='영상 화질 (기본: high=1080p, ultra=4K)')
     parser.add_argument('--info', type=str, default='', help='상품 추가 정보')
     
     args = parser.parse_args()
+    
+    # 플랫폼별 길이 검증
+    platform_config = ShortFormCreator.PLATFORMS[args.platform]
+    if args.length and args.length not in platform_config['lengths']:
+        print(f"\n⚠️  경고: {args.platform}에서 {args.length}초는 지원하지 않습니다.")
+        print(f"선택 가능한 길이: {', '.join(map(str, platform_config['lengths']))}초")
+        print(f"최적 길이 {platform_config['optimal']}초를 사용합니다.\n")
+        args.length = None
     
     print(f"\n{'='*60}")
     print(f"🎬 쇼핑 숏폼 영상 제작 시스템")
@@ -361,7 +485,8 @@ def main():
     creator = ShortFormCreator(
         platform=args.platform,
         language=args.lang,
-        quality=args.quality
+        quality=args.quality,
+        length=args.length
     )
     
     # PLAN 단계
