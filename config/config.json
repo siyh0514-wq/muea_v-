@@ -1,0 +1,46 @@
+{
+  "system": {
+    "version": "1.0.0",
+    "name": "YouTube Shorts 자동화 시스템",
+    "description": "사진만 제공하면 자동으로 숏폼 영상을 생성하는 노코드 시스템"
+  },
+  "directories": {
+    "input_images": "./input/images",
+    "processing": "./input/processing",
+    "completed": "./input/completed",
+    "output_videos": "./output/videos",
+    "output_thumbnails": "./output/thumbnails",
+    "output_scripts": "./output/scripts"
+  },
+  "video_settings": {
+    "format": "mp4",
+    "resolution": {
+      "width": 1080,
+      "height": 1920
+    },
+    "duration": {
+      "min": 15,
+      "max": 60
+    },
+    "fps": 30,
+    "codec": "h264"
+  },
+  "automation": {
+    "auto_process": true,
+    "batch_size": 5,
+    "retry_count": 3,
+    "notification_enabled": true
+  },
+  "optimization": {
+    "cost_minimization": true,
+    "quality": "balanced",
+    "processing_priority": "efficiency"
+  },
+  "ai_settings": {
+    "keyword_analysis_model": "gpt-4o-mini",
+    "script_generation_model": "gpt-4o-mini",
+    "thumbnail_design_model": "dall-e-3",
+    "temperature": 0.7,
+    "max_tokens": 2000
+  }
+}

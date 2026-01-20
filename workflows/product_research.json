@@ -1,0 +1,295 @@
+{
+  "product_research_system": {
+    "name": "제품 판매 여부 자동 리서치 시스템",
+    "description": "이미지 업로드시 제품이 실제로 판매중인지 자동 분석",
+    "version": "1.0.0"
+  },
+  "research_workflow": {
+    "step_1_image_analysis": {
+      "description": "Gemini Vision으로 제품 정보 추출",
+      "api": "gemini-1.5-flash with vision",
+      "input": "제품 이미지",
+      "extract": [
+        "제품명 또는 브랜드",
+        "제품 카테고리 (예: 전자제품, 패션, 식품 등)",
+        "특징 및 디자인 요소",
+        "텍스트 또는 로고 (OCR)",
+        "예상 가격대",
+        "제품 상태 (신제품/중고)"
+      ],
+      "output": "product_info.json"
+    },
+    "step_2_reverse_image_search": {
+      "description": "Google 역이미지 검색으로 동일 제품 찾기",
+      "methods": {
+        "method_1_google_custom_search": {
+          "api": "Google Custom Search API",
+          "endpoint": "https://www.googleapis.com/customsearch/v1",
+          "parameters": {
+            "searchType": "image",
+            "imgSize": "large",
+            "q": "{extracted_product_name}"
+          },
+          "cost": "무료 (100 queries/day), $5 per 1000 queries",
+          "accuracy": "매우 높음"
+        },
+        "method_2_serpapi": {
+          "api": "SerpAPI (추천)",
+          "endpoint": "https://serpapi.com/search",
+          "parameters": {
+            "engine": "google_reverse_image",
+            "image_url": "{uploaded_image_url}"
+          },
+          "cost": "$50/month (5000 searches)",
+          "accuracy": "매우 높음",
+          "benefit": "쇼핑 결과 포함"
+        },
+        "method_3_free_alternative": {
+          "api": "Bing Visual Search API",
+          "cost": "무료 tier 있음",
+          "accuracy": "높음"
+        }
+      },
+      "output": "similar_products.json"
+    },
+    "step_3_shopping_search": {
+      "description": "제품 판매 여부 및 가격 정보 수집",
+      "search_platforms": [
+        "Google Shopping",
+        "네이버 쇼핑",
+        "쿠팡",
+        "Amazon",
+        "알리익스프레스",
+        "11번가"
+      ],
+      "api_method": {
+        "google_shopping": {
+          "api": "SerpAPI Google Shopping",
+          "query": "{product_name}",
+          "extract": [
+            "판매 여부 (available/unavailable)",
+            "가격 범위",
+            "판매처 리스트",
+            "리뷰 개수",
+            "평점"
+          ]
+        },
+        "naver_shopping": {
+          "method": "Naver Search API",
+          "api_key": "네이버 개발자센터에서 발급",
+          "free": true,
+          "best_for": "한국 시장 분석"
+        }
+      },
+      "output": "shopping_results.json"
+    },
+    "step_4_market_analysis": {
+      "description": "Gemini로 시장 분석 및 인사이트 생성",
+      "api": "gemini-1.5-flash",
+      "input": {
+        "product_info": "step 1 결과",
+        "similar_products": "step 2 결과",
+        "shopping_results": "step 3 결과"
+      },
+      "analysis": [
+        "판매 여부 확정",
+        "가격 경쟁력 분석",
+        "시장 포화도",
+        "예상 수익성",
+        "경쟁 제품 수",
+        "트렌드 점수"
+      ],
+      "output": "market_analysis.json"
+    },
+    "step_5_content_recommendation": {
+      "description": "리서치 결과 기반 콘텐츠 추천",
+      "if_product_selling": {
+        "recommendation": "제품 리뷰, 비교, 사용후기 콘텐츠",
+        "keywords": "리뷰 키워드 + 제품명 + 가격 비교",
+        "monetization": "제휴 링크, 구매 링크 포함 가능"
+      },
+      "if_product_not_selling": {
+        "recommendation": "희귀 제품, 단종 제품 소개 콘텐츠",
+        "keywords": "희귀템, 단종, 구하기 어려운",
+        "angle": "독점 정보, 대체 제품 추천"
+      },
+      "output": "content_strategy.json"
+    }
+  },
+  "detailed_output_format": {
+    "product_research_result": {
+      "timestamp": "2024-01-20T10:00:00Z",
+      "product_info": {
+        "detected_name": "제품명",
+        "category": "카테고리",
+        "brand": "브랜드명",
+        "description": "제품 설명",
+        "confidence": 0.95
+      },
+      "selling_status": {
+        "is_selling": true,
+        "selling_platforms": [
+          {
+            "platform": "쿠팡",
+            "url": "상품 URL",
+            "price": "29,900원",
+            "availability": "재고 있음",
+            "rating": 4.5,
+            "reviews": 1234
+          },
+          {
+            "platform": "네이버 쇼핑",
+            "url": "상품 URL",
+            "price": "32,000원",
+            "availability": "재고 있음",
+            "rating": 4.3,
+            "reviews": 856
+          }
+        ],
+        "price_range": {
+          "min": 29900,
+          "max": 35000,
+          "average": 31500,
+          "currency": "KRW"
+        }
+      },
+      "market_analysis": {
+        "competition_level": "high/medium/low",
+        "trend_score": 85,
+        "revenue_potential": "high",
+        "market_saturation": 0.7,
+        "recommendation": "경쟁이 높지만 수요가 많은 제품. 차별화된 리뷰 콘텐츠 추천"
+      },
+      "content_strategy": {
+        "recommended_angle": "가격 비교 및 구매 가이드",
+        "keywords": ["제품명", "리뷰", "가격비교", "추천", "2024"],
+        "hashtags": ["#제품리뷰", "#가성비", "#추천템"],
+        "monetization_options": [
+          "쿠팡 파트너스 링크",
+          "네이버 쇼핑 제휴",
+          "리뷰 의뢰 협찬"
+        ]
+      },
+      "similar_products": [
+        {
+          "name": "유사 제품 1",
+          "similarity": 0.89,
+          "price": "27,000원",
+          "platform": "쿠팡"
+        }
+      ]
+    }
+  },
+  "api_requirements": {
+    "essential": {
+      "gemini_api": {
+        "purpose": "이미지 분석 + 시장 분석",
+        "status": "보유 중 ✓",
+        "cost": "$0.003/request"
+      },
+      "google_custom_search_api": {
+        "purpose": "역이미지 검색 + 쇼핑 검색",
+        "status": "Google APIs에 포함 (활성화 필요)",
+        "cost": "무료 100 queries/day, $5/1000 queries",
+        "setup": "Google Cloud Console에서 활성화"
+      }
+    },
+    "recommended": {
+      "serpapi": {
+        "purpose": "고급 검색 및 쇼핑 결과",
+        "cost": "$50/month (5000 searches)",
+        "benefit": "더 정확한 쇼핑 결과, 여러 플랫폼 통합",
+        "alternative": "Google Custom Search로 대체 가능"
+      },
+      "naver_search_api": {
+        "purpose": "한국 시장 특화 검색",
+        "cost": "무료 (25,000 calls/day)",
+        "benefit": "네이버 쇼핑 검색 결과",
+        "setup": "네이버 개발자센터에서 발급",
+        "recommended": true
+      }
+    },
+    "optional": {
+      "amazon_product_api": {
+        "purpose": "Amazon 제품 정보",
+        "benefit": "해외 시장 분석"
+      }
+    }
+  },
+  "implementation_modes": {
+    "mode_1_basic_free": {
+      "name": "기본 무료 모드",
+      "uses": [
+        "Gemini Vision (이미지 분석)",
+        "Google Custom Search (무료 100/day)",
+        "Naver Search API (무료)"
+      ],
+      "cost": "$0.003/product",
+      "accuracy": "80-85%",
+      "speed": "15-20초"
+    },
+    "mode_2_advanced": {
+      "name": "고급 유료 모드",
+      "uses": [
+        "Gemini Vision",
+        "SerpAPI (역이미지 + 쇼핑)",
+        "Google Custom Search",
+        "Naver Search API"
+      ],
+      "cost": "$0.02/product",
+      "accuracy": "95%+",
+      "speed": "10-15초"
+    },
+    "mode_3_hybrid": {
+      "name": "하이브리드 모드 (추천)",
+      "uses": [
+        "Gemini Vision (항상)",
+        "무료 API 우선 사용",
+        "필요시에만 유료 API",
+        "캐싱으로 중복 검색 방지"
+      ],
+      "cost": "$0.005/product",
+      "accuracy": "85-90%",
+      "speed": "12-18초"
+    }
+  },
+  "gemini_product_analysis_prompt": {
+    "prompt": "당신은 제품 분석 전문가입니다. 제공된 이미지를 분석하세요.\n\n**이미지:** [업로드된 제품 이미지]\n\n**분석 항목:**\n1. 제품명 또는 브랜드 (이미지 내 텍스트 읽기)\n2. 제품 카테고리 (전자제품/패션/뷰티/식품/생활용품 등)\n3. 주요 특징 및 디자인 요소\n4. 예상 가격대 (저가/중가/고가)\n5. 제품 상태 (신제품/중고/빈티지)\n6. 시장성 평가 (판매 가능성)\n\n**JSON 응답:**\n```json\n{\n  \"product_name\": \"제품명 또는 브랜드\",\n  \"category\": \"카테고리\",\n  \"subcategory\": \"세부 카테고리\",\n  \"features\": [\"특징1\", \"특징2\", \"특징3\"],\n  \"detected_text\": [\"이미지 내 텍스트들\"],\n  \"estimated_price_range\": \"10,000-30,000원\",\n  \"condition\": \"new/used/vintage\",\n  \"marketability_score\": 85,\n  \"search_keywords\": [\"검색용 키워드1\", \"키워드2\", \"키워드3\"],\n  \"is_recognizable_product\": true,\n  \"confidence\": 0.92\n}\n```",
+    "model": "gemini-1.5-flash",
+    "temperature": 0.3
+  },
+  "notification_format": {
+    "when_product_found": {
+      "title": "✅ 제품 발견!",
+      "message": "'{product_name}'이(가) {platform_count}개 플랫폼에서 판매중입니다.",
+      "details": {
+        "min_price": "29,900원",
+        "max_price": "35,000원",
+        "competition": "중간",
+        "recommendation": "가격 비교 리뷰 콘텐츠 추천"
+      },
+      "action": "최적화된 대본 자동 생성"
+    },
+    "when_product_not_found": {
+      "title": "ℹ️ 제품 미판매",
+      "message": "'{product_name}'은(는) 현재 판매되지 않는 제품입니다.",
+      "details": {
+        "possible_reasons": [
+          "단종 제품",
+          "해외 전용 제품",
+          "맞춤 제품",
+          "제품 인식 실패"
+        ],
+        "recommendation": "희귀 제품 소개 또는 대체 제품 추천 콘텐츠"
+      },
+      "action": "대체 콘텐츠 전략 제안"
+    }
+  },
+  "integration_with_main_workflow": {
+    "new_step_0": "제품 리서치 (선택적)",
+    "trigger": "이미지가 제품으로 감지되면 자동 실행",
+    "duration": "15-20초",
+    "output": "리서치 리포트 + 최적화된 콘텐츠 전략",
+    "benefit": "제품 콘텐츠의 경우 수익화 가능성 크게 향상"
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "did_integration": {
+    "name": "D-ID API를 활용한 자동 비디오 생성",
+    "description": "정적 이미지와 대본을 실제 말하는 비디오로 변환",
+    "version": "1.0.0"
+  },
+  "workflow_with_did": {
+    "step_1_image_input": {
+      "input": "사용자가 제공한 이미지",
+      "action": "input/images 폴더에 업로드",
+      "output": "image_path"
+    },
+    "step_2_gemini_analysis": {
+      "input": "이미지 + Google Search Console 트렌드",
+      "api": "Gemini-1.5-flash with vision",
+      "prompt": "이미지 분석 + 고수익 키워드 추출 + 트렌드 정렬",
+      "output": "keywords.json"
+    },
+    "step_3_script_generation": {
+      "input": "keywords + 이미지 설명",
+      "api": "Gemini-1.5-flash",
+      "prompt": "15-60초 숏폼 대본 작성 (후킹, 본문, CTA)",
+      "output": "script.json with text"
+    },
+    "step_4_did_video_creation": {
+      "input": "이미지 + 대본 텍스트",
+      "api": "D-ID API",
+      "endpoint": "https://api.d-id.com/talks",
+      "method": "POST",
+      "payload": {
+        "source_url": "{uploaded_image_url}",
+        "script": {
+          "type": "text",
+          "input": "{script_text}",
+          "provider": {
+            "type": "microsoft",
+            "voice_id": "ko-KR-SunHiNeural"
+          }
+        },
+        "config": {
+          "stitch": true,
+          "result_format": "mp4"
+        }
+      },
+      "output": "talking_video.mp4",
+      "note": "D-ID가 자동으로 입 움직임과 음성을 생성!"
+    },
+    "step_5_thumbnail_creation": {
+      "input": "원본 이미지 + 키워드",
+      "api": "Cloud Vision API + 이미지 편집",
+      "action": "텍스트 오버레이 추가",
+      "output": "thumbnail.png"
+    },
+    "step_6_youtube_upload": {
+      "input": "video.mp4 + thumbnail.png + metadata",
+      "api": "YouTube Data API v3",
+      "action": "자동 업로드 + SEO 최적화",
+      "output": "YouTube video URL"
+    }
+  },
+  "did_api_configuration": {
+    "authentication": {
+      "type": "Basic Auth",
+      "header": "Authorization: Basic {base64(api_key)}",
+      "api_key_location": "환경변수 DID_API_KEY"
+    },
+    "create_talk_endpoint": {
+      "url": "https://api.d-id.com/talks",
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json",
+        "Authorization": "Basic {api_key}"
+      },
+      "request_body": {
+        "source_url": "URL of the image",
+        "script": {
+          "type": "text",
+          "subtitles": "false",
+          "provider": {
+            "type": "microsoft",
+            "voice_id": "ko-KR-SunHiNeural"
+          },
+          "ssml": "false",
+          "input": "대본 텍스트"
+        },
+        "config": {
+          "fluent": "false",
+          "pad_audio": "0.0",
+          "stitch": true,
+          "result_format": "mp4"
+        }
+      }
+    },
+    "korean_voices": {
+      "microsoft_azure": [
+        {
+          "voice_id": "ko-KR-SunHiNeural",
+          "gender": "Female",
+          "style": "친근하고 밝음",
+          "recommended": true
+        },
+        {
+          "voice_id": "ko-KR-InJoonNeural",
+          "gender": "Male",
+          "style": "전문적이고 신뢰감"
+        },
+        {
+          "voice_id": "ko-KR-BongJinNeural",
+          "gender": "Male",
+          "style": "뉴스 앵커 스타일"
+        },
+        {
+          "voice_id": "ko-KR-GookMinNeural",
+          "gender": "Male",
+          "style": "차분하고 안정적"
+        }
+      ],
+      "recommended_for_shorts": "ko-KR-SunHiNeural (밝고 에너지 넘침)"
+    },
+    "polling_for_result": {
+      "description": "D-ID는 비동기 처리, 결과 확인 필요",
+      "get_talk_endpoint": "https://api.d-id.com/talks/{id}",
+      "method": "GET",
+      "poll_interval": "3-5초",
+      "max_wait_time": "120초",
+      "status_values": {
+        "created": "생성됨",
+        "started": "처리중",
+        "done": "완료",
+        "error": "오류"
+      },
+      "result_field": "result_url"
+    }
+  },
+  "optimization_tips": {
+    "cost_reduction": [
+      "D-ID 크레딧 효율적 사용: 짧은 대본 작성 (15-30초)",
+      "고품질 이미지 사용: 재생성 방지",
+      "배치 처리: 한번에 여러 비디오 생성"
+    ],
+    "quality_improvement": [
+      "고해상도 이미지 사용 (최소 1024x1024)",
+      "정면을 보는 인물 사진이 최적",
+      "대본은 자연스러운 구어체로 작성",
+      "적절한 쉼표와 마침표로 리듬감 추가"
+    ]
+  },
+  "complete_automation_flow": {
+    "trigger": "이미지를 input/images에 업로드",
+    "step_1": "Gemini가 이미지 분석 + 키워드 추출 ($0.001)",
+    "step_2": "Gemini가 대본 생성 ($0.002)",
+    "step_3": "D-ID가 말하는 비디오 생성 ($0.08)",
+    "step_4": "썸네일 자동 생성 (거의 무료)",
+    "step_5": "YouTube 자동 업로드 (무료)",
+    "total_time": "5-10분",
+    "total_cost": "$0.084",
+    "human_intervention": "0분 (완전 자동)"
+  },
+  "example_payload": {
+    "description": "실제 D-ID API 호출 예시",
+    "request": {
+      "source_url": "https://your-storage.com/input-image.jpg",
+      "script": {
+        "type": "text",
+        "subtitles": "false",
+        "provider": {
+          "type": "microsoft",
+          "voice_id": "ko-KR-SunHiNeural"
+        },
+        "input": "안녕하세요! 오늘은 AI 자동화로 돈 버는 방법을 알려드릴게요. 첫 번째, 유튜브 숏폼을 자동으로 만드세요. 두 번째, 고수익 키워드를 활용하세요. 세 번째, 매일 꾸준히 업로드하세요. 이 방법으로 월 100만원 수익을 만들 수 있습니다. 구독과 좋아요 부탁드려요!"
+      },
+      "config": {
+        "stitch": true,
+        "result_format": "mp4"
+      }
+    },
+    "response": {
+      "id": "tlk_abc123xyz",
+      "status": "created",
+      "created_at": "2024-01-20T10:00:00.000Z"
+    },
+    "polling_response": {
+      "id": "tlk_abc123xyz",
+      "status": "done",
+      "result_url": "https://d-id-talks-prod.s3.amazonaws.com/result.mp4"
+    }
+  }
+}

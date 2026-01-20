@@ -1,0 +1,108 @@
+{
+  "high_revenue_keywords": {
+    "description": "고수익 키워드 데이터베이스 - YouTube 숏폼 최적화",
+    "categories": {
+      "finance": {
+        "keywords": ["재테크", "투자", "부동산", "주식", "암호화폐", "돈버는법", "재무자유", "경제적자유"],
+        "cpm_multiplier": 2.5,
+        "engagement_rate": "high"
+      },
+      "tech": {
+        "keywords": ["AI", "인공지능", "ChatGPT", "자동화", "노코드", "IT기술", "프로그래밍", "앱개발"],
+        "cpm_multiplier": 2.2,
+        "engagement_rate": "high"
+      },
+      "business": {
+        "keywords": ["창업", "사업", "마케팅", "브랜딩", "성공비결", "부업", "사이드프로젝트", "자영업"],
+        "cpm_multiplier": 2.0,
+        "engagement_rate": "medium-high"
+      },
+      "lifestyle": {
+        "keywords": ["자기계발", "생산성", "루틴", "성공습관", "독서", "운동", "건강", "다이어트"],
+        "cpm_multiplier": 1.8,
+        "engagement_rate": "medium-high"
+      },
+      "trending": {
+        "keywords": ["바이럴", "챌린지", "트렌드", "인기", "화제", "핫이슈", "실시간", "급상승"],
+        "cpm_multiplier": 2.3,
+        "engagement_rate": "very-high"
+      }
+    }
+  },
+  "top_tier_keywords": {
+    "description": "최상단 노출 키워드 - 검색 최적화 SEO",
+    "primary_keywords": [
+      "shorts",
+      "숏폼",
+      "1분만에",
+      "꿀팁",
+      "대박",
+      "충격",
+      "실화",
+      "진짜",
+      "반전",
+      "놀라운"
+    ],
+    "secondary_keywords": [
+      "2024",
+      "최신",
+      "정리",
+      "모음",
+      "비교",
+      "추천",
+      "리뷰",
+      "분석",
+      "설명",
+      "방법"
+    ],
+    "call_to_action": [
+      "구독필수",
+      "좋아요",
+      "공유하기",
+      "댓글남겨주세요",
+      "팔로우",
+      "저장",
+      "시청필수"
+    ]
+  },
+  "trending_topics": {
+    "updated": "2024-01-20",
+    "topics": [
+      {
+        "topic": "AI 자동화",
+        "score": 95,
+        "category": "tech"
+      },
+      {
+        "topic": "돈버는 방법",
+        "score": 93,
+        "category": "finance"
+      },
+      {
+        "topic": "생산성 루틴",
+        "score": 88,
+        "category": "lifestyle"
+      },
+      {
+        "topic": "부동산 투자",
+        "score": 87,
+        "category": "finance"
+      },
+      {
+        "topic": "창업 성공기",
+        "score": 85,
+        "category": "business"
+      }
+    ]
+  },
+  "keyword_combination_rules": {
+    "formula": "[고수익키워드] + [최상단키워드] + [행동유도]",
+    "examples": [
+      "AI 자동화로 돈버는 방법 | 1분만에 보는 꿀팁 | 구독필수",
+      "재테크 비밀 대공개 | 충격적인 실화 | 좋아요 필수",
+      "생산성 10배 높이는 루틴 | 진짜 효과있는 방법 | 시청필수"
+    ],
+    "max_title_length": 100,
+    "optimal_length": 60
+  }
+}

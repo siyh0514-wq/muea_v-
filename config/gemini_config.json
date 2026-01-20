@@ -1,0 +1,150 @@
+{
+  "gemini_configuration": {
+    "name": "Gemini AI 최적화 설정",
+    "description": "Google Gemini를 메인 AI로 활용하여 비용 최소화",
+    "version": "1.0.0"
+  },
+  "models": {
+    "gemini_1_5_flash": {
+      "model_id": "gemini-1.5-flash",
+      "use_cases": [
+        "이미지 분석 (vision)",
+        "키워드 추출",
+        "대본 생성",
+        "빠른 처리"
+      ],
+      "speed": "매우 빠름",
+      "cost": "매우 저렴 (GPT-4 대비 1/50)",
+      "context_window": "1M tokens",
+      "recommended": "primary",
+      "pricing": {
+        "input": "$0.000075 per 1K tokens",
+        "output": "$0.0003 per 1K tokens",
+        "image": "$0.00001315 per image"
+      }
+    },
+    "gemini_1_5_pro": {
+      "model_id": "gemini-1.5-pro",
+      "use_cases": [
+        "복잡한 분석",
+        "고급 콘텐츠 생성",
+        "정확도가 중요한 작업"
+      ],
+      "speed": "빠름",
+      "cost": "저렴 (GPT-4 대비 1/10)",
+      "context_window": "2M tokens",
+      "recommended": "fallback",
+      "pricing": {
+        "input": "$0.00125 per 1K tokens",
+        "output": "$0.005 per 1K tokens",
+        "image": "$0.000263 per image"
+      }
+    }
+  },
+  "prompts_optimized_for_gemini": {
+    "image_analysis_vision": {
+      "description": "Gemini Vision으로 이미지 분석 및 키워드 추출",
+      "prompt": "당신은 YouTube 숏폼 마케팅 전문가입니다.\n\n이미지를 분석하고 다음 정보를 JSON 형식으로 제공하세요:\n\n1. **주요 주제**: 이미지의 핵심 내용 (한 문장)\n2. **고수익 키워드 5개**: 재테크, AI, 창업, 자기계발 등 CPM이 높은 키워드\n3. **최상단 노출 키워드 3개**: 꿀팁, 1분만에, 대박 등 클릭을 유도하는 키워드\n4. **감정/분위기**: 이미지의 전반적인 톤\n5. **타겟 오디언스**: 이 콘텐츠에 관심있을 사람들\n6. **수익 잠재력**: very-high / high / medium / low\n\n응답 형식:\n```json\n{\n  \"main_topic\": \"주제\",\n  \"high_revenue_keywords\": [\"키워드1\", \"키워드2\", \"키워드3\", \"키워드4\", \"키워드5\"],\n  \"top_tier_keywords\": [\"키워드1\", \"키워드2\", \"키워드3\"],\n  \"emotion\": \"감정\",\n  \"target_audience\": \"오디언스\",\n  \"revenue_potential\": \"평가\",\n  \"category\": \"finance/tech/business/lifestyle/trending\"\n}\n```",
+      "temperature": 0.7,
+      "max_tokens": 1000
+    },
+    "script_generation": {
+      "description": "Gemini로 매력적인 숏폼 대본 작성",
+      "prompt": "당신은 바이럴 YouTube 숏폼 작가입니다.\n\n다음 정보로 15-60초 대본을 작성하세요:\n- 주제: {topic}\n- 키워드: {keywords}\n- 타겟: {target_audience}\n\n**대본 구조**:\n1. **후킹 (0-3초)**: 강력한 첫 문장으로 시청자 사로잡기\n2. **본문 (3-50초)**: 핵심 메시지 3-5개 포인트\n3. **CTA (50-60초)**: 구독, 좋아요, 댓글 유도\n\n**스타일**:\n- 짧고 강렬한 문장\n- 친근하고 에너지 넘치는 톤\n- 숫자와 구체적 사실 포함\n- 호기심 자극\n\n응답 형식:\n```json\n{\n  \"title\": \"제목 (60자 이내)\",\n  \"hook\": \"첫 3초 대사\",\n  \"main_content\": \"본문 내용\",\n  \"cta\": \"행동 유도 멘트\",\n  \"full_script\": \"전체 대본\",\n  \"duration_seconds\": 30,\n  \"hashtags\": [\"#해시태그1\", \"#해시태그2\", \"#해시태그3\"],\n  \"description\": \"영상 설명 (150자)\"\n}\n```",
+      "temperature": 0.8,
+      "max_tokens": 2000
+    },
+    "seo_optimization": {
+      "description": "Gemini로 YouTube SEO 최적화",
+      "prompt": "당신은 YouTube SEO 전문가입니다.\n\n다음 콘텐츠를 YouTube 알고리즘에 최적화하세요:\n- 제목: {title}\n- 대본: {script}\n- 키워드: {keywords}\n\n**최적화 작업**:\n1. 제목 개선 (클릭률 향상, 60자 이내)\n2. 해시태그 10개 선정 (트렌드 + 니치)\n3. 설명 작성 (첫 150자가 핵심, SEO 키워드 포함)\n4. 최적 업로드 시간 추천\n\n응답 형식:\n```json\n{\n  \"optimized_title\": \"최적화된 제목\",\n  \"hashtags\": [\"10개의 해시태그\"],\n  \"description\": \"SEO 최적화된 설명 (300자)\",\n  \"category\": \"카테고리\",\n  \"best_posting_time\": \"요일, 시간대\",\n  \"thumbnail_text\": \"썸네일에 들어갈 텍스트\",\n  \"engagement_tips\": [\"팁1\", \"팁2\", \"팁3\"]\n}\n```",
+      "temperature": 0.6,
+      "max_tokens": 1500
+    }
+  },
+  "api_calls": {
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+    "authentication": {
+      "method": "API Key",
+      "header": "x-goog-api-key: {GEMINI_API_KEY}"
+    },
+    "request_format": {
+      "model": "gemini-1.5-flash",
+      "contents": [
+        {
+          "parts": [
+            {
+              "text": "프롬프트 텍스트"
+            },
+            {
+              "inline_data": {
+                "mime_type": "image/jpeg",
+                "data": "base64_encoded_image"
+              }
+            }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "temperature": 0.7,
+        "topK": 40,
+        "topP": 0.95,
+        "maxOutputTokens": 2000
+      }
+    }
+  },
+  "cost_comparison": {
+    "scenario": "1000개 비디오 생성",
+    "gemini_flash_cost": {
+      "image_analysis": "$0.013 (1000 images)",
+      "script_generation": "$0.30 (1000 scripts @ 1K tokens)",
+      "optimization": "$0.15 (1000 optimizations)",
+      "total": "$0.463"
+    },
+    "gpt4_mini_cost": {
+      "image_analysis": "$0.15",
+      "script_generation": "$2.00",
+      "optimization": "$1.00",
+      "total": "$3.15"
+    },
+    "savings": "$2.687 (85% 절감)",
+    "recommendation": "Gemini를 주력으로 사용하고 GPT는 백업으로"
+  },
+  "integration_with_nocode": {
+    "make_com": {
+      "module": "Google Gemini",
+      "actions": [
+        "Generate Content",
+        "Generate Content with Vision"
+      ],
+      "setup": "API 키 입력만으로 즉시 사용 가능"
+    },
+    "zapier": {
+      "module": "Google AI Studio",
+      "note": "Webhooks로 Gemini API 직접 호출"
+    },
+    "n8n": {
+      "module": "HTTP Request",
+      "endpoint": "Gemini API",
+      "note": "완전한 커스터마이징 가능"
+    }
+  },
+  "best_practices": {
+    "prompt_engineering": [
+      "명확하고 구체적인 지시사항",
+      "JSON 응답 형식 명시",
+      "예시 제공으로 일관성 확보",
+      "한국어 품질이 우수하므로 적극 활용"
+    ],
+    "error_handling": [
+      "Rate limit: 60 req/min (무료), 지켜야 함",
+      "이미지 크기: 최대 20MB",
+      "타임아웃: 60초 설정",
+      "실패시 GPT로 fallback"
+    ],
+    "optimization": [
+      "짧은 프롬프트 사용 (비용 절감)",
+      "배치 처리로 효율성 증대",
+      "캐싱으로 중복 요청 방지"
+    ]
+  }
+}

@@ -1,0 +1,173 @@
+{
+  "google_search_console_integration": {
+    "name": "Google Search Console을 활용한 실시간 트렌드 키워드 분석",
+    "description": "검색 데이터로 고수익 키워드 자동 발굴",
+    "version": "1.0.0"
+  },
+  "api_configuration": {
+    "endpoint": "https://www.googleapis.com/webmasters/v3",
+    "authentication": {
+      "type": "OAuth 2.0",
+      "scopes": [
+        "https://www.googleapis.com/auth/webmasters.readonly"
+      ],
+      "setup_guide": "Google Cloud Console에서 OAuth 2.0 클라이언트 생성"
+    }
+  },
+  "data_sources": {
+    "search_analytics": {
+      "endpoint": "/sites/{siteUrl}/searchAnalytics/query",
+      "method": "POST",
+      "description": "검색 쿼리, 클릭, 노출 데이터 조회",
+      "use_cases": [
+        "인기 검색어 발굴",
+        "클릭률 높은 키워드 찾기",
+        "트렌딩 토픽 감지"
+      ]
+    }
+  },
+  "keyword_discovery_workflow": {
+    "step_1_trending_queries": {
+      "description": "최근 7일간 급상승 검색어 찾기",
+      "api_call": {
+        "startDate": "7daysAgo",
+        "endDate": "today",
+        "dimensions": ["query"],
+        "rowLimit": 100,
+        "dataState": "all"
+      },
+      "filter": {
+        "impressions_min": 1000,
+        "ctr_min": 0.05,
+        "position_max": 10
+      },
+      "output": "trending_keywords.json"
+    },
+    "step_2_high_revenue_categories": {
+      "description": "수익성 높은 카테고리 키워드 추출",
+      "categories_to_track": [
+        "재테크",
+        "투자",
+        "AI",
+        "부동산",
+        "창업",
+        "자기계발",
+        "부업"
+      ],
+      "method": "각 카테고리 관련 검색어 필터링",
+      "output": "high_revenue_keywords.json"
+    },
+    "step_3_competitor_analysis": {
+      "description": "경쟁사 콘텐츠 성과 분석",
+      "api_call": {
+        "dimensions": ["page", "query"],
+        "filter_type": "contains",
+        "filter_keywords": ["shorts", "쇼츠", "숏폼"]
+      },
+      "output": "competitor_insights.json"
+    }
+  },
+  "integration_with_automation": {
+    "daily_keyword_update": {
+      "schedule": "매일 오전 9시",
+      "action": [
+        "Google Search Console에서 트렌드 키워드 조회",
+        "키워드 점수 계산 (노출 × CTR × 포지션)",
+        "상위 50개 키워드 추출",
+        "keywords.json 파일 자동 업데이트"
+      ],
+      "benefit": "항상 최신 트렌드 반영"
+    },
+    "keyword_scoring_formula": {
+      "description": "키워드 우선순위 점수 계산",
+      "formula": "(impressions × ctr × 100) / position",
+      "weight_factors": {
+        "impressions": "검색량 (높을수록 좋음)",
+        "ctr": "클릭률 (높을수록 좋음)",
+        "position": "평균 순위 (낮을수록 좋음)"
+      },
+      "example": {
+        "keyword": "AI 자동화 돈버는법",
+        "impressions": 10000,
+        "ctr": 0.08,
+        "position": 3,
+        "score": "(10000 × 0.08 × 100) / 3 = 26,667"
+      }
+    }
+  },
+  "no_youtube_channel_solution": {
+    "problem": "자신의 YouTube 채널이 없어도 Search Console 데이터 활용 가능?",
+    "solution": "일반 웹 검색 트렌드를 YouTube 키워드로 변환",
+    "method": {
+      "step_1": "Google Trends API 또는 공개 트렌드 데이터 활용",
+      "step_2": "검색량 높은 키워드 추출",
+      "step_3": "YouTube 특화 변환 (예: '방법' → '1분만에 보는 방법')",
+      "step_4": "Gemini AI로 YouTube 최적화"
+    },
+    "alternative_data_sources": [
+      {
+        "source": "Google Trends",
+        "api": "https://trends.google.com/trends/api/explore",
+        "free": true,
+        "description": "실시간 검색 트렌드"
+      },
+      {
+        "source": "YouTube Search API",
+        "api": "YouTube Data API v3",
+        "free": true,
+        "description": "YouTube 내 검색 자동완성"
+      },
+      {
+        "source": "Naver Trends",
+        "api": "https://datalab.naver.com",
+        "free": true,
+        "description": "한국 특화 트렌드"
+      }
+    ]
+  },
+  "practical_implementation": {
+    "without_search_console": {
+      "step_1": "config/keywords.json의 수동 키워드 사용",
+      "step_2": "주기적으로 트렌딩 토픽 수동 업데이트",
+      "step_3": "YouTube 검색창 자동완성 크롤링",
+      "step_4": "Gemini로 키워드 확장 및 최적화"
+    },
+    "with_search_console": {
+      "step_1": "API로 실시간 검색 데이터 수집",
+      "step_2": "자동으로 고수익 키워드 발굴",
+      "step_3": "경쟁 분석 자동화",
+      "step_4": "데이터 기반 의사결정"
+    }
+  },
+  "keyword_enrichment_prompt": {
+    "description": "Gemini로 기본 키워드를 YouTube 최적화 키워드로 변환",
+    "prompt_template": "다음 검색 키워드를 YouTube 숏폼에 최적화된 제목/키워드로 변환하세요:\n\n원본 키워드: {original_keyword}\n\n변환 규칙:\n1. 클릭 유도 단어 추가 (꿀팁, 1분만에, 대박 등)\n2. 감정 단어 추가 (충격, 놀라운, 진짜 등)\n3. 명확한 혜택 명시\n4. 60자 이내로 최적화\n\n예시:\n- '재테크' → '월 100만원 버는 재테크 꿀팁 | 1분만에 보는 방법'\n- 'AI 자동화' → '놀라운 AI 자동화로 돈버는 법 | 실제 성공 사례'\n\n응답 형식:\n```json\n{\n  \"optimized_title\": \"최적화된 제목\",\n  \"keywords\": [\"키워드1\", \"키워드2\", \"키워드3\"],\n  \"hashtags\": [\"#해시태그1\", \"#해시태그2\"],\n  \"click_potential\": \"high/medium/low\"\n}\n```",
+    "use_in_workflow": "키워드 분석 단계 후 자동 실행"
+  },
+  "sample_automation_script": {
+    "description": "노코드 플랫폼에서 사용할 수 있는 로직",
+    "pseudo_code": {
+      "step_1": "트렌드 키워드 가져오기 (keywords.json 또는 Trends API)",
+      "step_2": "각 키워드에 대해:",
+      "step_3": "  - Gemini로 YouTube 최적화 변환",
+      "step_4": "  - 수익 잠재력 점수 계산",
+      "step_5": "  - 상위 10개 키워드 선정",
+      "step_6": "선정된 키워드를 이미지 분석에 활용",
+      "step_7": "가장 적합한 키워드로 대본 생성"
+    }
+  },
+  "expected_results": {
+    "without_gsc": {
+      "keyword_quality": "Good (수동 큐레이션)",
+      "update_frequency": "주 1회",
+      "cost": "$0",
+      "effort": "주 1시간"
+    },
+    "with_gsc": {
+      "keyword_quality": "Excellent (데이터 기반)",
+      "update_frequency": "실시간",
+      "cost": "$0",
+      "effort": "완전 자동"
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "workflow_name": "YouTube Shorts 자동 생성 워크플로우",
+  "description": "사진 입력 → 자동 영상 생성 전체 프로세스",
+  "version": "1.0.0",
+  "steps": [
+    {
+      "step_id": "1",
+      "name": "이미지 수집",
+      "description": "input/images 폴더에서 새로운 이미지 스캔",
+      "input": {
+        "source": "./input/images",
+        "supported_formats": ["jpg", "jpeg", "png", "webp"],
+        "max_size_mb": 10
+      },
+      "output": {
+        "destination": "./input/processing",
+        "metadata_file": "image_metadata.json"
+      },
+      "automation": {
+        "trigger": "new_file_detected",
+        "interval_seconds": 60
+      }
+    },
+    {
+      "step_id": "2",
+      "name": "키워드 분석",
+      "description": "AI를 사용하여 이미지 분석 및 고수익 키워드 추출",
+      "input": {
+        "source": "./input/processing",
+        "prompt_template": "keyword_analysis"
+      },
+      "process": {
+        "ai_model": "gpt-4o-mini",
+        "use_vision": true,
+        "analyze_content": true,
+        "extract_keywords": true
+      },
+      "output": {
+        "destination": "./output/scripts",
+        "filename_pattern": "{timestamp}_keywords.json"
+      }
+    },
+    {
+      "step_id": "3",
+      "name": "대본 생성",
+      "description": "키워드 기반 매력적인 숏폼 대본 작성",
+      "input": {
+        "keywords_file": "output from step 2",
+        "prompt_template": "script_generation"
+      },
+      "process": {
+        "ai_model": "gpt-4o-mini",
+        "duration_target": 30,
+        "include_hook": true,
+        "include_cta": true
+      },
+      "output": {
+        "destination": "./output/scripts",
+        "filename_pattern": "{timestamp}_script.json"
+      }
+    },
+    {
+      "step_id": "4",
+      "name": "썸네일 생성",
+      "description": "AI로 클릭률 높은 썸네일 디자인",
+      "input": {
+        "base_image": "original image from step 1",
+        "keywords": "output from step 2",
+        "prompt_template": "thumbnail_design"
+      },
+      "process": {
+        "ai_model": "dall-e-3",
+        "size": "1024x1792",
+        "style": "vivid",
+        "add_text_overlay": true
+      },
+      "output": {
+        "destination": "./output/thumbnails",
+        "filename_pattern": "{timestamp}_thumbnail.png"
+      }
+    },
+    {
+      "step_id": "5",
+      "name": "콘텐츠 최적화",
+      "description": "YouTube 알고리즘 최적화",
+      "input": {
+        "script": "output from step 3",
+        "keywords": "output from step 2",
+        "prompt_template": "content_optimization"
+      },
+      "process": {
+        "ai_model": "gpt-4o-mini",
+        "optimize_seo": true,
+        "generate_hashtags": true,
+        "suggest_posting_time": true
+      },
+      "output": {
+        "destination": "./output/scripts",
+        "filename_pattern": "{timestamp}_optimized.json"
+      }
+    },
+    {
+      "step_id": "6",
+      "name": "비디오 조립",
+      "description": "이미지, 대본, 음악을 결합하여 최종 비디오 생성",
+      "input": {
+        "image": "original image",
+        "script": "output from step 3",
+        "thumbnail": "output from step 4",
+        "optimization": "output from step 5"
+      },
+      "process": {
+        "video_tool": "ffmpeg",
+        "add_transitions": true,
+        "add_background_music": true,
+        "add_voiceover": false,
+        "add_text_animation": true,
+        "duration": "auto"
+      },
+      "output": {
+        "destination": "./output/videos",
+        "filename_pattern": "{timestamp}_final.mp4",
+        "metadata_file": "{timestamp}_metadata.json"
+      }
+    },
+    {
+      "step_id": "7",
+      "name": "완료 처리",
+      "description": "처리 완료된 파일 정리 및 보고서 생성",
+      "input": {
+        "all_outputs": "outputs from previous steps"
+      },
+      "process": {
+        "move_original_image": "./input/completed",
+        "generate_report": true,
+        "send_notification": true
+      },
+      "output": {
+        "report_file": "./output/reports/{timestamp}_report.json"
+      }
+    }
+  ],
+  "error_handling": {
+    "retry_count": 3,
+    "retry_delay_seconds": 10,
+    "on_failure": "log_and_continue",
+    "notification_on_error": true
+  },
+  "cost_optimization": {
+    "batch_processing": true,
+    "batch_size": 5,
+    "use_cache": true,
+    "cache_duration_hours": 24,
+    "use_cheaper_models": {
+      "enabled": true,
+      "fallback_model": "gpt-4o-mini"
+    }
+  },
+  "performance_metrics": {
+    "track_processing_time": true,
+    "track_cost_per_video": true,
+    "track_success_rate": true,
+    "generate_analytics": true
+  }
+}
