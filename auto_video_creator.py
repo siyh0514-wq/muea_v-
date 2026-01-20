@@ -465,8 +465,9 @@ class AutoVideoCreator:
     def process_all_images(self):
         """input/images/ 폴더의 모든 이미지 처리"""
         image_dir = Path('input/images')
-        # 폴더가 없으면 생성
-        image_dir.mkdir(parents=True, exist_ok=True)
+        if not image_dir.exists():
+            print(f"❌ {image_dir} 폴더가 없습니다.")
+            return []
         
         image_files = list(image_dir.glob('*.jpg')) + list(image_dir.glob('*.png')) + list(image_dir.glob('*.jpeg'))
         
