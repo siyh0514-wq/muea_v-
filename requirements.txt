@@ -4,6 +4,9 @@ pillow>=10.0.0
 python-dotenv>=1.0.0
 requests>=2.31.0
 
+# 웹 UI (선택사항)
+flask>=3.0.0
+
 # 선택사항 (YouTube 업로드용)
 google-api-python-client>=2.0.0
 google-auth-oauthlib>=1.0.0

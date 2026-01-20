@@ -488,10 +488,20 @@ if __name__ == '__main__':
     import sys
     
     # 옵션 체크
-    if len(sys.argv) > 1 and sys.argv[1] == '--keyword':
-        # 키워드 선택 모드
-        from keyword_selector import run_keyword_selector
-        run_keyword_selector()
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '--keyword':
+            # 키워드 선택 모드 (터미널)
+            from keyword_selector import run_keyword_selector
+            run_keyword_selector()
+        elif sys.argv[1] == '--web':
+            # 웹 UI 모드
+            from keyword_selector_web import run_web_ui
+            run_web_ui()
+        else:
+            print("사용법:")
+            print("  python main.py              # 일반 자동화 모드")
+            print("  python main.py --keyword    # 키워드 선택 (터미널)")
+            print("  python main.py --web        # 키워드 선택 (웹 UI)")
     else:
         # 일반 자동화 모드
         automation = YouTubeAutomation()
