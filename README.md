@@ -42,6 +42,7 @@ python main.py --keyword
 
 **자세한 사용법**: 
 - [웹 UI 가이드](./docs/WEB_UI_GUIDE.md) 🌐
+- [웹 UI 스크린샷 및 상세 화면](./docs/WEB_UI_SCREENSHOTS.md) 📸
 - [키워드 선택 시스템 가이드](./docs/KEYWORD_SELECTOR.md)
 
 ## 💡 작동 방식
