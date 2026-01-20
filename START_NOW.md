@@ -1,0 +1,199 @@
+# 🚀 지금 바로 시작하기
+
+## ⚡ 3단계로 바로 실행
+
+### 1단계: 설치 (1분)
+
+```bash
+# Python 패키지 설치
+pip install google-generativeai pillow python-dotenv requests
+```
+
+### 2단계: API 키 설정 (2분)
+
+`.env` 파일을 만들고 API 키 입력:
+
+```bash
+# .env 파일 생성
+GEMINI_API_KEY=여기에-제미나이-API-키
+DID_API_KEY=여기에-D-ID-API-키
+```
+
+**API 키 받는 곳:**
+- **Gemini**: https://makersuite.google.com/app/apikey (무료!)
+- **D-ID**: https://www.d-id.com/ (무료 체험 20크레딧)
+
+### 3단계: 실행 (즉시!)
+
+```bash
+# 테스트 이미지와 대본 준비
+# 1. input/images/test.jpg - 아무 이미지나 넣기
+# 2. input/scripts/test.json - 아래 내용 복사
+
+# 실행!
+python main.py
+```
+
+---
+
+## 📝 테스트 대본 (test.json)
+
+`input/scripts/test.json` 파일을 만들고 이 내용 복사:
+
+```json
+{
+  "title": "AI 자동화 테스트",
+  "script_text": "안녕하세요! 이것은 자동화 시스템 테스트입니다. AI가 자동으로 영상을 만들고 있어요. 정말 신기하죠? 구독과 좋아요 부탁드려요!",
+  "duration": 15,
+  "voice_id": "ko-KR-SunHiNeural",
+  "category": "tech"
+}
+```
+
+---
+
+## ✅ 실행 결과
+
+스크립트가 자동으로:
+1. ✅ 이미지 분석 (Gemini)
+2. ✅ 키워드 최적화 (제목, 해시태그)
+3. ✅ 썸네일 생성
+4. ✅ 비디오 생성 (D-ID) - 5-8분 소요
+5. ✅ 메타데이터 저장
+
+**결과 파일:**
+- `output/videos/test_final.mp4` - 완성된 비디오
+- `output/thumbnails/test_thumbnail.png` - 썸네일
+- `output/optimized/test_metadata.json` - 최적화 정보
+
+---
+
+## 🎯 지금 당장 테스트하기
+
+### 최소 요구사항
+- ✅ **Python 3.8+** (설치되어 있나요?)
+- ✅ **Gemini API 키** (무료로 받기)
+- ✅ **D-ID API 키** (무료 체험 20크레딧)
+
+### 빠른 확인
+
+```bash
+# Python 버전 확인
+python --version
+
+# 설치
+pip install google-generativeai pillow python-dotenv requests
+
+# API 키 설정
+echo "GEMINI_API_KEY=your-key" > .env
+echo "DID_API_KEY=your-key" >> .env
+
+# 실행!
+python main.py
+```
+
+---
+
+## ❓ API 키가 없다면?
+
+### 시뮬레이션 모드
+API 키 없이도 **테스트 가능**합니다:
+
+```bash
+python main.py
+```
+
+**시뮬레이션에서 작동:**
+- ✅ 이미지 분석 (기본값 사용)
+- ✅ 키워드 최적화 (기본 키워드)
+- ✅ 썸네일 생성
+- ⚠️ 비디오 생성 (실제 생성 안됨, 이미지만 복사)
+
+**실제 비디오 생성하려면:**
+- D-ID API 키 필수 (https://www.d-id.com/)
+- 무료 체험으로 10-20개 영상 만들기 가능!
+
+---
+
+## 🔧 문제 해결
+
+### Python이 없다면?
+```bash
+# Windows
+https://www.python.org/downloads/ 에서 다운로드
+
+# Mac
+brew install python3
+
+# Linux
+sudo apt install python3
+```
+
+### pip가 안된다면?
+```bash
+python -m pip install --upgrade pip
+```
+
+### 실행이 안된다면?
+```bash
+# 권한 주기 (Mac/Linux)
+chmod +x main.py
+
+# Python으로 직접 실행
+python3 main.py
+```
+
+---
+
+## 💡 완전 가동 체크리스트
+
+- [ ] Python 3.8+ 설치됨
+- [ ] pip install 완료
+- [ ] .env 파일에 API 키 입력
+- [ ] input/images/에 이미지 업로드
+- [ ] input/scripts/에 JSON 파일 생성
+- [ ] python main.py 실행
+
+**모두 체크되면 → 바로 사용 가능! 🚀**
+
+---
+
+## 🎬 실제 사용 예시
+
+```bash
+# 1. 이미지 준비
+cp my_photo.jpg input/images/video1.jpg
+
+# 2. 대본 작성 (간단하게!)
+echo '{
+  "title": "내 첫 숏폼",
+  "script_text": "안녕하세요! 첫 자동화 비디오입니다!",
+  "duration": 10,
+  "voice_id": "ko-KR-SunHiNeural",
+  "category": "tech"
+}' > input/scripts/video1.json
+
+# 3. 실행!
+python main.py
+
+# 4. 결과 확인
+ls output/videos/
+ls output/thumbnails/
+```
+
+---
+
+## 📞 지원
+
+### 오류가 나면?
+1. Python 버전 확인: `python --version`
+2. 패키지 재설치: `pip install -r requirements.txt`
+3. API 키 확인: `.env` 파일 열어보기
+
+### API 키 발급 도움
+- **Gemini**: Google 계정으로 로그인 → API Key 클릭
+- **D-ID**: 회원가입 → Dashboard → API Keys
+
+---
+
+**지금 바로 시작하세요! 5분 안에 첫 자동화 비디오 완성! 🎉**
