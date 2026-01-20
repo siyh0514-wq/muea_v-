@@ -18,9 +18,24 @@ class ShortFormCreator:
     """숏폼 영상 자동 생성기"""
     
     PLATFORMS = {
-        'youtube': {'length': 60, 'name': 'YouTube Shorts', 'optimal': '60초'},
-        'tiktok': {'length': 15, 'name': 'TikTok', 'optimal': '15초'},
-        'instagram': {'length': 30, 'name': 'Instagram Reels', 'optimal': '30초'}
+        'youtube': {
+            'name': 'YouTube Shorts', 
+            'lengths': [15, 30, 45, 60],  # 선택 가능한 길이들
+            'optimal': 60,
+            'upload': True  # 자동 업로드 지원
+        },
+        'tiktok': {
+            'name': 'TikTok',
+            'lengths': [9, 15, 21, 30],
+            'optimal': 15,
+            'upload': False
+        },
+        'instagram': {
+            'name': 'Instagram Reels',
+            'lengths': [15, 30, 45, 60],
+            'optimal': 30,
+            'upload': False
+        }
     }
     
     LANGUAGES = {
@@ -31,7 +46,7 @@ class ShortFormCreator:
         'th': 'ภาษาไทย'
     }
     
-    def __init__(self, platform, language, quality='high', subtitles=True):
+    def __init__(self, platform, language, quality='high', subtitles=True, length=None):
         self.platform = platform
         self.language = language
         self.quality = quality
@@ -39,7 +54,15 @@ class ShortFormCreator:
         
         # 플랫폼별 설정
         self.platform_config = self.PLATFORMS.get(platform, self.PLATFORMS['youtube'])
-        self.video_length = self.platform_config['length']
+        
+        # 길이 설정 (지정하지 않으면 최적 길이 사용)
+        if length and length in self.platform_config['lengths']:
+            self.video_length = length
+        else:
+            self.video_length = self.platform_config['optimal']
+        
+        # YouTube 업로드 URL
+        self.youtube_upload_url = None
         
     def plan(self, product_name):
         """
