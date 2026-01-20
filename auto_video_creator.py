@@ -85,10 +85,20 @@ class AutoVideoCreator:
             topic, all_keywords, selected_title, num_versions=3
         )
         
-        # 6. 고화질 비디오 생성
-        print(f"\n🎥 5단계: {self.quality.upper()} 화질 비디오 생성 중...")
-        videos = []
+        # 6. YouTube 설명란 자동 생성
+        print("\n📄 5단계: YouTube 설명란 자동 생성 중...")
+        descriptions = []
         for version in versions:
+            description = self.generate_description(
+                version, all_keywords, image_analysis
+            )
+            descriptions.append(description)
+            print(f"   ✓ {version['version_id']} 설명란 생성 완료")
+        
+        # 7. 고화질 비디오 생성
+        print(f"\n🎥 6단계: {self.quality.upper()} 화질 비디오 생성 중...")
+        videos = []
+        for i, version in enumerate(versions):
             video_path = self.create_high_quality_video(
                 image_path, version, image_analysis
             )
@@ -96,11 +106,12 @@ class AutoVideoCreator:
                 'version_id': version['version_id'],
                 'video_path': video_path,
                 'title': version['title'],
-                'script': version['script']
+                'script': version['script'],
+                'description': descriptions[i]  # 설명란 추가
             })
             print(f"   ✓ {version['version_id']} 생성 완료: {video_path}")
         
-        # 7. 결과 저장
+        # 8. 결과 저장
         result = {
             'language': self.language,
             'quality': self.quality,
@@ -114,7 +125,114 @@ class AutoVideoCreator:
         
         self.save_result(result)
         
+        print("\n" + "="*80)
+        print("✅ 완성! 아래 파일들이 생성되었습니다:")
+        for video in videos:
+            print(f"\n📹 {video['version_id']}:")
+            print(f"   - 비디오: {video['video_path']}")
+            print(f"   - 제목: {video['title']}")
+            print(f"   - 설명: (자동 생성됨 - 메타데이터 확인)")
+        print("="*80 + "\n")
+        
         return result
+    
+    def generate_description(self, version, keywords, image_analysis):
+        """
+        YouTube 영상 설명란 자동 생성
+        
+        Args:
+            version: 버전 정보 (title, script, duration 등)
+            keywords: 선택된 키워드 리스트
+            image_analysis: 이미지 분석 결과
+        
+        Returns:
+            str: YouTube 설명란 텍스트
+        """
+        # 언어별 설명란 템플릿
+        templates = {
+            'ko': {
+                'intro': f"📱 {version['title']}\n\n",
+                'product_desc': f"💡 {image_analysis.get('description', '제품 소개')}",
+                'keywords_section': f"\n\n🔍 핵심 키워드: {', '.join(keywords)}",
+                'cta_buy': "\n\n🛒 구매 링크:",
+                'cta_subscribe': "\n\n👍 도움이 되셨다면 좋아요와 구독 부탁드려요!",
+                'cta_comment': "💬 궁금한 점은 댓글로 남겨주세요!",
+                'hashtags': f"\n\n{' '.join([f'#{kw.replace(' ', '')}' for kw in keywords])} #숏폼 #쇼핑 #리뷰"
+            },
+            'zh': {
+                'intro': f"📱 {version['title']}\n\n",
+                'product_desc': f"💡 {image_analysis.get('description', '产品介绍')}",
+                'keywords_section': f"\n\n🔍 关键词: {', '.join(keywords)}",
+                'cta_buy': "\n\n🛒 购买链接:",
+                'cta_subscribe': "\n\n👍 觉得有帮助的话，请点赞订阅！",
+                'cta_comment': "💬 有问题欢迎评论！",
+                'hashtags': f"\n\n{' '.join([f'#{kw.replace(' ', '')}' for kw in keywords])} #短视频 #购物 #测评"
+            },
+            'en': {
+                'intro': f"📱 {version['title']}\n\n",
+                'product_desc': f"💡 {image_analysis.get('description', 'Product introduction')}",
+                'keywords_section': f"\n\n🔍 Keywords: {', '.join(keywords)}",
+                'cta_buy': "\n\n🛒 Buy Here:",
+                'cta_subscribe': "\n\n👍 Like & Subscribe if this was helpful!",
+                'cta_comment': "💬 Questions? Drop a comment below!",
+                'hashtags': f"\n\n{' '.join([f'#{kw.replace(' ', '')}' for kw in keywords])} #Shorts #Shopping #Review"
+            },
+            'ja': {
+                'intro': f"📱 {version['title']}\n\n",
+                'product_desc': f"💡 {image_analysis.get('description', '商品紹介')}",
+                'keywords_section': f"\n\n🔍 キーワード: {', '.join(keywords)}",
+                'cta_buy': "\n\n🛒 購入リンク:",
+                'cta_subscribe': "\n\n👍 役に立ったらいいねとチャンネル登録お願いします！",
+                'cta_comment': "💬 質問はコメント欄へ！",
+                'hashtags': f"\n\n{' '.join([f'#{kw.replace(' ', '')}' for kw in keywords])} #ショート動画 #ショッピング #レビュー"
+            },
+            'th': {
+                'intro': f"📱 {version['title']}\n\n",
+                'product_desc': f"💡 {image_analysis.get('description', 'รายละเอียดสินค้า')}",
+                'keywords_section': f"\n\n🔍 คำหลัก: {', '.join(keywords)}",
+                'cta_buy': "\n\n🛒 ลิงก์ซื้อ:",
+                'cta_subscribe': "\n\n👍 ช่วยกดไลค์และติดตามด้วยนะคะ!",
+                'cta_comment': "💬 มีคำถามคอมเมนต์ได้เลย!",
+                'hashtags': f"\n\n{' '.join([f'#{kw.replace(' ', '')}' for kw in keywords])} #วิดีโอสั้น #ช้อปปิ้ง #รีวิว"
+            }
+        }
+        
+        template = templates.get(self.language, templates['ko'])
+        
+        # 설명란 조합
+        description = (
+            template['intro'] +
+            template['product_desc'] +
+            template['keywords_section'] +
+            template['cta_buy'] +
+            "\n[링크를 여기에 삽입하세요]" +
+            template['cta_subscribe'] +
+            "\n" + template['cta_comment'] +
+            template['hashtags']
+        )
+        
+        # 버전별 정보 추가
+        if version.get('duration'):
+            duration_info = {
+                'ko': f"\n\n⏱️ 영상 길이: 약 {version['duration']}초",
+                'zh': f"\n\n⏱️ 视频时长: 约{version['duration']}秒",
+                'en': f"\n\n⏱️ Duration: ~{version['duration']}s",
+                'ja': f"\n\n⏱️ 動画の長さ: 約{version['duration']}秒",
+                'th': f"\n\n⏱️ ความยาววิดีโอ: ประมาณ{version['duration']}วินาที"
+            }
+            description += duration_info.get(self.language, "")
+        
+        # 추가 정보
+        footer = {
+            'ko': "\n\n━━━━━━━━━━━━━━━━━\n📺 이 채널을 구독하고 최신 정보를 받아보세요!\n━━━━━━━━━━━━━━━━━",
+            'zh': "\n\n━━━━━━━━━━━━━━━━━\n📺 订阅频道获取最新资讯！\n━━━━━━━━━━━━━━━━━",
+            'en': "\n\n━━━━━━━━━━━━━━━━━\n📺 Subscribe for more updates!\n━━━━━━━━━━━━━━━━━",
+            'ja': "\n\n━━━━━━━━━━━━━━━━━\n📺 チャンネル登録で最新情報をゲット！\n━━━━━━━━━━━━━━━━━",
+            'th': "\n\n━━━━━━━━━━━━━━━━━\n📺 ติดตามช่องเพื่อรับข้อมูลใหม่ๆ!\n━━━━━━━━━━━━━━━━━"
+        }
+        description += footer.get(self.language, footer['ko'])
+        
+        return description
     
     def analyze_image_with_gemini(self, image_path):
         """AI로 이미지 분석 (Gemini 또는 GPT-4o Vision)"""
@@ -225,15 +343,24 @@ class AutoVideoCreator:
             output_path = output_dir / f"{image_path.stem}_{version['version_id']}_HD.mp4"
             
             # 메타데이터만 저장
+            metadata = {
+                'version': version,
+                'quality': self.quality,
+                'resolution': '1920x1080' if self.quality == 'high' else '3840x2160',
+                'status': 'simulated',
+                'description': version.get('description', '')  # 설명란 저장
+            }
+            
             with open(output_path.with_suffix('.json'), 'w', encoding='utf-8') as f:
-                json.dump({
-                    'version': version,
-                    'quality': self.quality,
-                    'resolution': '1920x1080',
-                    'status': 'simulated'
-                }, f, ensure_ascii=False, indent=2)
+                json.dump(metadata, f, ensure_ascii=False, indent=2)
+            
+            # 설명란을 별도 텍스트 파일로도 저장
+            desc_path = output_path.with_suffix('.txt')
+            with open(desc_path, 'w', encoding='utf-8') as f:
+                f.write(version.get('description', ''))
             
             print(f"      💡 실제 고화질 비디오를 생성하려면 D-ID API 키가 필요합니다.")
+            print(f"      📄 설명란 저장됨: {desc_path}")
             return str(output_path)
         
         try:

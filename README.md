@@ -6,6 +6,7 @@
 
 ### ✨ 핵심 특징
 - 📸 **이미지 업로드만으로 완성**: 사진 1장 + 간단한 대본 = 완성된 YouTube 영상
+- 📄 **YouTube 설명란 자동 생성** ⭐NEW: SEO 최적화된 설명, 해시태그, 구매 링크 자동 생성
 - 🎯 **키워드 선택 시스템** ⭐NEW: 주제 입력 → AI가 고수익 키워드 추천 → 원하는 키워드 선택
 - 🤖 **AI 제품 리서치**: 제품 사진을 업로드하면 자동으로 판매 여부, 가격, 경쟁사 분석
 - 💰 **고수익 키워드 자동 최적화**: AI가 자동으로 고수익 키워드와 최상단 노출 키워드 조합
@@ -44,6 +45,7 @@ python main.py --keyword
 - [웹 UI 가이드](./docs/WEB_UI_GUIDE.md) 🌐
 - [웹 UI 스크린샷 및 상세 화면](./docs/WEB_UI_SCREENSHOTS.md) 📸
 - [키워드 선택 시스템 가이드](./docs/KEYWORD_SELECTOR.md)
+- [YouTube 설명란 자동 생성 가이드](./docs/DESCRIPTION_GUIDE.md) ⭐NEW
 
 ## 💡 작동 방식
 
